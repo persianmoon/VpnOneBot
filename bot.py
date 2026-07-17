@@ -17,7 +17,7 @@ from telegram.ext import (
 
 # ================= تنظیمات =================
 
-TOKEN = "token"
+TOKEN = "bot-token"
 
 ADMIN_ID = 24734452
 
