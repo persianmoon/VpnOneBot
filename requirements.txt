@@ -1,1 +1,17 @@
-python-telegram-bot==20.7
+  a n y i o = = 4 . 1 3 . 0 
+ 
+ c e r t i f i = = 2 0 2 6 . 5 . 2 0 
+ 
+ h 1 1 = = 0 . 1 6 . 0 
+ 
+ h t t p c o r e = = 1 . 0 . 9 
+ 
+ h t t p x = = 0 . 2 8 . 1 
+ 
+ i d n a = = 3 . 1 8 
+ 
+ p y t h o n - t e l e g r a m - b o t = = 2 2 . 7 
+ 
+ t y p i n g _ e x t e n s i o n s = = 4 . 1 5 . 0 
+ 
+ 
