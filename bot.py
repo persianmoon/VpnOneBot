@@ -493,7 +493,9 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
 
     await query.answer()
-
+   
+    print("BUTTON CLICKED:", query.data)
+ 
     action, user_id = query.data.split("|")
 
     user_id = int(user_id)
