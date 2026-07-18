@@ -135,7 +135,7 @@ async def get_sales_count():
 
         return result[0]
     
-    async def update_order_status(user_id, status):
+async def update_order_status(user_id, status):
 
     async with aiosqlite.connect(DB_NAME) as db:
 
