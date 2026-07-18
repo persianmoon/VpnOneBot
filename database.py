@@ -1,5 +1,6 @@
 import aiosqlite
 from datetime import datetime, timedelta
+from persiantools.jdatetime import JalaliDate
 
 
 DB_NAME = "vpnone.db"
@@ -228,9 +229,9 @@ async def get_user_active_orders(user_id):
 
 async def save_user_service(user_id, config):
 
-    expire_date = (
+    expire_date = JalaliDate(
         datetime.now() + timedelta(days=30)
-    ).strftime("%Y-%m-%d")
+    ).strftime("%Y/%m/%d")
 
 
     async with aiosqlite.connect(DB_NAME) as db:
