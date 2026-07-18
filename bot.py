@@ -202,32 +202,30 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # ================= ادمین =================
 
-# ================= ادمین =================
-
-if user_id == ADMIN_ID:
+    if user_id == ADMIN_ID:
 
 
-    if text == "📨 ارسال پیام":
+        if text == "📨 ارسال پیام":
 
-        send_message_mode = "get_id"
+            send_message_mode = "get_id"
 
-        await update.message.reply_text(
-            "🆔 آیدی عددی کاربر را ارسال کنید:"
-        )
+            await update.message.reply_text(
+                "🆔 آیدی عددی کاربر را ارسال کنید:"
+            )
 
-        return
+            return
 
 
 
-    if text == "📡 ثبت اشتراک":
+        if text == "📡 ثبت اشتراک":
 
-        config_mode = "get_id"
+            config_mode = "get_id"
 
-        await update.message.reply_text(
-            "🆔 آیدی کاربر را ارسال کنید:"
-        )
+            await update.message.reply_text(
+                "🆔 آیدی کاربر را ارسال کنید:"
+            )
 
-        return
+            return
 
 
 
