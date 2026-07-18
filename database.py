@@ -176,3 +176,20 @@ async def get_user_orders(user_id):
         )
 
         return await cursor.fetchall()
+
+async def get_user_active_orders(user_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT *
+            FROM orders
+            WHERE user_id = ?
+            AND status = 'approved'
+            ORDER BY id DESC
+            """,
+            (user_id,)
+        )
+
+        return await cursor.fetchall()

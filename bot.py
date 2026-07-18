@@ -7,7 +7,8 @@ from database import (
     get_pending_orders,
     get_sales_count,
     update_order_status,
-    get_user_orders
+    get_user_orders,
+    get_user_active_orders,
 )
 
 import os
@@ -90,6 +91,7 @@ def main_menu():
     return ReplyKeyboardMarkup(
         [
             ["💳 خرید VPN"],
+            ["📡 سرویس من"],
             ["📚 آموزش اتصال"],
             ["📞 پشتیبانی"]
         ],
@@ -405,6 +407,41 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
 
+# ================= سرویس من =================
+
+if text == "📡 سرویس من":
+
+    services = await get_user_active_orders(user_id)
+
+
+    if not services:
+
+        await update.message.reply_text(
+            "❌ هنوز سرویس فعالی ندارید.",
+            reply_markup=main_menu()
+        )
+
+        return
+
+
+    msg = "📡 سرویس‌های فعال شما:\n\n"
+
+
+    for service in services:
+
+        msg += (
+            f"📦 پلن: {service[2]}\n"
+            f"💰 مبلغ: {service[3]}\n"
+            f"✅ وضعیت: فعال\n\n"
+        )
+
+
+    await update.message.reply_text(
+        msg,
+        reply_markup=main_menu()
+    )
+
+    return
 
 
     # ================= خرید VPN =================
