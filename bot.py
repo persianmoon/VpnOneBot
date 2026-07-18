@@ -192,6 +192,9 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     global send_to_user
+    global send_message_mode
+    global config_mode
+    global send_to_user
 
     user_id = update.message.from_user.id
     text = update.message.text
@@ -248,39 +251,38 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
-if send_message_mode == "send_text":
+        if send_message_mode == "send_text":
 
-    await context.bot.send_message(
-        chat_id=send_to_user,
-        text=text
-    )
-
-
-    # ذخیره لینک سرویس
-    if "://" in text:
-
-        await save_user_service(
-            send_to_user,
-            text
-        )
+            await context.bot.send_message(
+                chat_id=send_to_user,
+                text=text
+            )
 
 
-        await update.message.reply_text(
-            "✅ لینک سرویس ارسال و ذخیره شد.\n"
-            "📅 انقضا: ۳۰ روز دیگر"
-        )
+            # اگر لینک بود، ذخیره کن
+            if "://" in text:
 
-    else:
-
-        await update.message.reply_text(
-            "✅ پیام ارسال شد."
-        )
+                await save_user_service(
+                    send_to_user,
+                    text
+                )
 
 
-    send_message_mode = None
-    send_to_user = None
+                await update.message.reply_text(
+                    "✅ لینک سرویس ارسال و ذخیره شد."
+                )
 
-    return
+            else:
+
+                await update.message.reply_text(
+                    "✅ پیام ارسال شد."
+                )
+
+
+            send_message_mode = None
+            send_to_user = None
+
+            return
 
             return
         if text == "👥 کاربران":
@@ -438,14 +440,12 @@ if send_message_mode == "send_text":
 
         return
 
-# ================= سرویس من =================
 
     # ================= سرویس من =================
 
     if text == "📡 سرویس من":
 
         services = await get_user_active_orders(user_id)
-
 
         if not services:
 
@@ -464,10 +464,9 @@ if send_message_mode == "send_text":
 
             msg += (
                 f"📦 پلن: {service[0]}\n"
-                f"💰 مبلغ: {service[1]}\n\n"
-                f"🔗 لینک اشتراک:\n"
-                f"{service[2]}\n\n"
-                f"📅 تاریخ انقضا: {service[3]}\n"
+                f"💰 مبلغ: {service[1]}\n"
+                f"🔗 لینک اشتراک:\n{service[2] or 'ثبت نشده'}\n\n"
+                f"📅 تاریخ انقضا: {service[3] or 'ثبت نشده'}\n"
                 f"✅ وضعیت: فعال\n\n"
             )
 
@@ -478,6 +477,8 @@ if send_message_mode == "send_text":
         )
 
         return
+    
+
     # ================= خرید VPN =================
 
     if text == "💳 خرید VPN":
