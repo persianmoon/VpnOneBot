@@ -1,3 +1,5 @@
+import os
+
 from telegram import (
     Update,
     ReplyKeyboardMarkup,
@@ -17,7 +19,7 @@ from telegram.ext import (
 
 # ================= تنظیمات =================
 
-TOKEN = "8277846112:AAF0nYGl7z2nNhaNqyzsqiG37At4Vwua8Jc"
+TOKEN = os.getenv("BOT_TOKEN")
 
 ADMIN_ID = 24734452
 
@@ -30,8 +32,7 @@ ANDROID_TUTORIAL = "https://t.me/vpnoneorg/27"
 
 IOS_TUTORIAL = "https://t.me/vpnoneorg/5"
 
-WINDOWS_TUTORIAL = "https://t.me/YourChannel/12"
-
+WINDOWS_TUTORIAL = "https://t.me/vpnoneorg/29"
 
 
 # ================= پلن ها =================
@@ -62,14 +63,12 @@ PLANS = {
         "name": "نامحدود - 3 کاربره",
         "price": "1/000/000 تومان"
     }
-
 }
 
 
 orders = {}
 
 send_to_user = None
-
 
 
 # ================= منوها =================
@@ -84,7 +83,6 @@ def main_menu():
         ],
         resize_keyboard=True
     )
-
 
 
 def vpn_menu():
@@ -102,7 +100,6 @@ def vpn_menu():
     )
 
 
-
 def tutorial_menu():
 
     return ReplyKeyboardMarkup(
@@ -116,7 +113,6 @@ def tutorial_menu():
     )
 
 
-
 def back_menu():
 
     return ReplyKeyboardMarkup(
@@ -125,30 +121,25 @@ def back_menu():
         ],
         resize_keyboard=True
     )
-
-
-
 # ================= شروع =================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_id = update.message.from_user.id
 
-
     if user_id == ADMIN_ID:
-
         await update.message.reply_text(
             "👑 شما ادمین هستید."
         )
         return
 
-
     await update.message.reply_text(
         "👋 به VpnOne خوش آمدید",
         reply_markup=main_menu()
     )
-    
-    # ================= مدیریت پیام ها =================
+
+
+# ================= مدیریت پیام ها =================
 
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -209,11 +200,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text == "📱 آموزش اتصال اندروید":
 
         await update.message.reply_text(
-
             f"📱 آموزش اتصال اندروید:\n\n{ANDROID_TUTORIAL}",
-
             reply_markup=back_menu()
-
         )
 
         return
@@ -223,11 +211,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text == "🍎 آموزش اتصال iOS":
 
         await update.message.reply_text(
-
             f"🍎 آموزش اتصال iOS:\n\n{IOS_TUTORIAL}",
-
             reply_markup=back_menu()
-
         )
 
         return
@@ -237,11 +222,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text == "💻 آموزش اتصال ویندوز":
 
         await update.message.reply_text(
-
             f"💻 آموزش اتصال ویندوز:\n\n{WINDOWS_TUTORIAL}",
-
             reply_markup=back_menu()
-
         )
 
         return
@@ -253,11 +235,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text == "💳 خرید VPN":
 
         await update.message.reply_text(
-
             "📦 پلن موردنظر را انتخاب کنید:",
-
             reply_markup=vpn_menu()
-
         )
 
         return
@@ -268,11 +247,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if text in PLANS:
 
-
         orders[user_id] = {
 
             "plan": PLANS[text]["name"],
-
             "price": PLANS[text]["price"]
 
         }
@@ -378,15 +355,12 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "✅ رسید شما ارسال شد.\nمنتظر تایید باشید."
 
     )
-
-
-
-# ================= تایید ادمین =================
+    
+    # ================= تایید ادمین =================
 
 async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     global send_to_user
-
 
     query = update.callback_query
 
@@ -398,9 +372,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = int(user_id)
 
 
-
     if action == "ok":
-
 
         send_to_user = user_id
 
@@ -427,9 +399,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-
     else:
-
 
         await context.bot.send_message(
 
@@ -442,6 +412,11 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ================= اجرای ربات =================
+
+if not TOKEN:
+    raise ValueError(
+        "BOT_TOKEN is not set!"
+    )
 
 
 app = Application.builder().token(TOKEN).build()
