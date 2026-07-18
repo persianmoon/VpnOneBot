@@ -16,7 +16,7 @@ from telegram.ext import (
     ContextTypes,
     filters
 )
-
+from telegram import KeyboardButton
 
 # ================= تنظیمات =================
 
@@ -122,17 +122,32 @@ def back_menu():
         ],
         resize_keyboard=True
     )
+
+
+def admin_menu():
+
+    return ReplyKeyboardMarkup(
+        [
+            ["👥 کاربران"],
+            ["📦 سفارش‌ها"],
+            ["⏳ سفارش‌های در انتظار"],
+            ["📊 آمار فروش"]
+        ],
+        resize_keyboard=True
+    )
 # ================= شروع =================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_id = update.message.from_user.id
 
-    if user_id == ADMIN_ID:
-        await update.message.reply_text(
-            "👑 شما ادمین هستید."
-        )
-        return
+if user_id == ADMIN_ID:
+
+    await update.message.reply_text(
+        "👑 پنل مدیریت VpnOne",
+        reply_markup=admin_menu()
+    )
+    return
 
     await update.message.reply_text(
         "👋 به VpnOne خوش آمدید",
@@ -145,6 +160,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         update.message.from_user.first_name
 )
 # ================= مدیریت پیام ها =================
+
+async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    user_id = update.message.from_user.id
+
+    if user_id != ADMIN_ID:
+        return
+
+
+    await update.message.reply_text(
+        "👑 پنل مدیریت VpnOne",
+        reply_markup=admin_menu()
+    )
 
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -439,6 +467,12 @@ app.add_handler(
     )
 )
 
+app.add_handler(
+    CommandHandler(
+        "admin",
+        admin
+    )
+)
 
 app.add_handler(
     CallbackQueryHandler(
