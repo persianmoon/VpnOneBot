@@ -10,29 +10,32 @@ async def init_db():
     async with aiosqlite.connect(DB_NAME) as db:
 
         await db.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-
-            id INTEGER PRIMARY KEY,
-            username TEXT,
-            first_name TEXT
-
-        )
-        """)
-
-
-        await db.execute("""
         CREATE TABLE IF NOT EXISTS orders (
 
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
             plan TEXT,
             price TEXT,
-            status TEXT,
-            config TEXT,
-            expire_date TEXT
+            status TEXT
 
         )
         """)
+
+
+        try:
+            await db.execute(
+                "ALTER TABLE orders ADD COLUMN config TEXT"
+            )
+        except:
+            pass
+
+
+        try:
+            await db.execute(
+                "ALTER TABLE orders ADD COLUMN expire_date TEXT"
+            )
+        except:
+            pass
 
 
         await db.commit()
