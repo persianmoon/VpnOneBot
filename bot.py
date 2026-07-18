@@ -189,140 +189,109 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
     # ================= ادمین =================
+    # ================= ادمین =================
 
     if user_id == ADMIN_ID:
 
 
-    if text == "👥 کاربران":
+        if text == "👥 کاربران":
 
-        users = await get_users()
+            users = await get_users()
 
-        if not users:
-
-            await update.message.reply_text(
-                "❌ هنوز کاربری ثبت نشده."
-            )
-            return
-
-
-        msg = "👥 کاربران:\n\n"
-
-        for user in users[:20]:
-
-            msg += (
-                f"🆔 {user[0]}\n"
-                f"👤 {user[1] or 'بدون یوزرنیم'}\n"
-                f"نام: {user[2]}\n\n"
-            )
+            if not users:
+                await update.message.reply_text(
+                    "❌ هنوز کاربری ثبت نشده."
+                )
+                return
 
 
-        await update.message.reply_text(msg)
+            msg = "👥 کاربران:\n\n"
 
-        return
+            for user in users[:20]:
+
+                msg += (
+                    f"🆔 {user[0]}\n"
+                    f"👤 {user[1] or 'بدون یوزرنیم'}\n"
+                    f"نام: {user[2]}\n\n"
+                )
 
 
-
-    if text == "📦 سفارش‌ها":
-
-        orders_list = await get_orders()
-
-
-        if not orders_list:
-
-            await update.message.reply_text(
-                "❌ سفارشی وجود ندارد."
-            )
+            await update.message.reply_text(msg)
 
             return
 
 
-        msg = "📦 سفارش‌ها:\n\n"
+
+        if text == "📦 سفارش‌ها":
+
+            orders_list = await get_orders()
+
+            if not orders_list:
+                await update.message.reply_text(
+                    "❌ سفارشی وجود ندارد."
+                )
+                return
 
 
-        for order in orders_list[:20]:
+            msg = "📦 سفارش‌ها:\n\n"
 
-            msg += (
-                f"شماره: {order[0]}\n"
-                f"کاربر: {order[1]}\n"
-                f"پلن: {order[2]}\n"
-                f"مبلغ: {order[3]}\n"
-                f"وضعیت: {order[4]}\n\n"
-            )
+            for order in orders_list[:20]:
 
-
-        await update.message.reply_text(msg)
-
-        return
+                msg += (
+                    f"شماره: {order[0]}\n"
+                    f"کاربر: {order[1]}\n"
+                    f"پلن: {order[2]}\n"
+                    f"مبلغ: {order[3]}\n"
+                    f"وضعیت: {order[4]}\n\n"
+                )
 
 
-
-    if text == "⏳ سفارش‌های در انتظار":
-
-        pending = await get_pending_orders()
-
-
-        if not pending:
-
-            await update.message.reply_text(
-                "✅ سفارش در انتظاری نیست."
-            )
+            await update.message.reply_text(msg)
 
             return
 
 
-        msg = "⏳ سفارش‌های انتظار:\n\n"
+
+        if text == "⏳ سفارش‌های در انتظار":
+
+            pending = await get_pending_orders()
+
+            if not pending:
+                await update.message.reply_text(
+                    "✅ سفارش در انتظاری نیست."
+                )
+                return
 
 
-        for order in pending:
+            msg = "⏳ سفارش‌های در انتظار:\n\n"
 
-            msg += (
-                f"🆔 سفارش: {order[0]}\n"
-                f"کاربر: {order[1]}\n"
-                f"پلن: {order[2]}\n"
-                f"مبلغ: {order[3]}\n\n"
+            for order in pending:
+
+                msg += (
+                    f"🆔 سفارش: {order[0]}\n"
+                    f"کاربر: {order[1]}\n"
+                    f"پلن: {order[2]}\n"
+                    f"مبلغ: {order[3]}\n\n"
+                )
+
+
+            await update.message.reply_text(msg)
+
+            return
+
+
+
+        if text == "📊 آمار فروش":
+
+            count = await get_sales_count()
+
+            await update.message.reply_text(
+                f"📊 تعداد فروش موفق: {count}"
             )
 
-
-        await update.message.reply_text(msg)
-
-        return
-
-
-
-    if text == "📊 آمار فروش":
-
-        count = await get_sales_count()
-
-
-        await update.message.reply_text(
-            f"📊 تعداد فروش موفق: {count}"
-        )
-
-        return
-
-
-
-    # ارسال پیام ادمین به مشتری تایید شده
-
-    if send_to_user:
-
-        await context.bot.copy_message(
-            chat_id=send_to_user,
-            from_chat_id=ADMIN_ID,
-            message_id=update.message.message_id
-        )
-
-        await update.message.reply_text(
-            "✅ برای مشتری ارسال شد."
-        )
-
-        send_to_user = None
-
-
-    return
-
-
-
+            return
+        
+        
     # ================= بازگشت =================
 
     if text == "⬅️ بازگشت":
@@ -620,6 +589,16 @@ print("VpnOne Bot Running...")
 
 import asyncio
 
-asyncio.run(init_db())
 
-app.run_polling()
+async def main():
+
+    await init_db()
+
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+
+    await asyncio.Event().wait()
+
+
+asyncio.run(main())
