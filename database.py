@@ -78,3 +78,59 @@ async def add_order(user_id, plan, price):
         )
 
         await db.commit()
+        
+async def get_users():
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            "SELECT * FROM users ORDER BY id DESC"
+        )
+
+        return await cursor.fetchall()
+
+
+
+async def get_orders():
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            "SELECT * FROM orders ORDER BY id DESC"
+        )
+
+        return await cursor.fetchall()
+
+
+
+async def get_pending_orders():
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT * FROM orders
+            WHERE status='pending'
+            ORDER BY id DESC
+            """
+        )
+
+        return await cursor.fetchall()
+
+
+
+async def get_sales_count():
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT COUNT(*)
+            FROM orders
+            WHERE status='approved'
+            """
+        )
+
+        result = await cursor.fetchone()
+
+        return result[0]
