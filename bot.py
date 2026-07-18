@@ -440,43 +440,44 @@ if send_message_mode == "send_text":
 
 # ================= سرویس من =================
 
-if text == "📡 سرویس من":
+    # ================= سرویس من =================
 
-    services = await get_user_active_orders(user_id)
+    if text == "📡 سرویس من":
+
+        services = await get_user_active_orders(user_id)
 
 
-    if not services:
+        if not services:
+
+            await update.message.reply_text(
+                "❌ هنوز سرویس فعالی ندارید.",
+                reply_markup=main_menu()
+            )
+
+            return
+
+
+        msg = "📡 سرویس‌های فعال شما:\n\n"
+
+
+        for service in services:
+
+            msg += (
+                f"📦 پلن: {service[0]}\n"
+                f"💰 مبلغ: {service[1]}\n\n"
+                f"🔗 لینک اشتراک:\n"
+                f"{service[2]}\n\n"
+                f"📅 تاریخ انقضا: {service[3]}\n"
+                f"✅ وضعیت: فعال\n\n"
+            )
+
 
         await update.message.reply_text(
-            "❌ هنوز سرویس فعالی ندارید.",
+            msg,
             reply_markup=main_menu()
         )
 
         return
-
-
-    msg = "📡 سرویس‌های فعال شما:\n\n"
-
-
-    for service in services:
-
-        msg += (
-            f"📦 پلن: {service[0]}\n"
-            f"💰 مبلغ: {service[1]}\n\n"
-            f"🔗 لینک اشتراک:\n"
-            f"{service[2]}\n\n"
-            f"📅 تاریخ انقضا: {service[3]}\n"
-            f"✅ وضعیت: فعال\n\n"
-            "━━━━━━━━━━━━━━\n\n"
-        )
-
-
-    await update.message.reply_text(
-        msg,
-        reply_markup=main_menu()
-    )
-
-    return
     # ================= خرید VPN =================
 
     if text == "💳 خرید VPN":
