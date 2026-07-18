@@ -202,186 +202,141 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # ================= ادمین =================
 
-    if user_id == ADMIN_ID:
+# ================= ادمین =================
 
-        global send_message_mode, send_to_user
+if user_id == ADMIN_ID:
 
 
-        if text == "📨 ارسال پیام":
+    if text == "📨 ارسال پیام":
 
-            send_message_mode = "get_id"
+        send_message_mode = "get_id"
+
+        await update.message.reply_text(
+            "🆔 آیدی عددی کاربر را ارسال کنید:"
+        )
+
+        return
+
+
+
+    if text == "📡 ثبت اشتراک":
+
+        config_mode = "get_id"
+
+        await update.message.reply_text(
+            "🆔 آیدی کاربر را ارسال کنید:"
+        )
+
+        return
+
+
+
+    # دریافت آیدی برای پیام
+
+    if send_message_mode == "get_id":
+
+        try:
+
+            send_to_user = int(text)
+
+            send_message_mode = "send_text"
+
 
             await update.message.reply_text(
-                "🆔 آیدی عددی کاربر را ارسال کنید:"
+                "✏️ متن پیام را ارسال کنید:"
             )
 
-            return
 
-
-        if text == "📡 ثبت اشتراک":
-
-            config_mode = "get_user"
+        except:
 
             await update.message.reply_text(
-                "🆔 آیدی کاربر را ارسال کنید:"
-            )
-    
-            return
-
-        if send_message_mode == "get_id":
-
-            try:
-
-                send_to_user = int(text)
-
-                send_message_mode = "send_text"
-
-
-                await update.message.reply_text(
-                    "✏️ متن پیام را ارسال کنید:"
-                )
-
-            except:
-
-                await update.message.reply_text(
-                    "❌ آیدی باید عدد باشد."
-                )
-
-            return
-
-
-
-        if send_message_mode == "send_text":
-
-            await context.bot.send_message(
-                chat_id=send_to_user,
-                text=text
+                "❌ آیدی اشتباه است."
             )
 
 
-            # اگر لینک بود، ذخیره کن
-            if "://" in text:
-
-                await save_user_service(
-                    send_to_user,
-                    text
-                )
-
-
-                await update.message.reply_text(
-                    "✅ لینک سرویس ارسال و ذخیره شد."
-                )
-
-            else:
-
-                await update.message.reply_text(
-                    "✅ پیام ارسال شد."
-                )
-
-
-            send_message_mode = None
-            send_to_user = None
-
-            return
-
-            return
-        if text == "👥 کاربران":
-
-            users = await get_users()
-
-            if not users:
-                await update.message.reply_text(
-                    "❌ هنوز کاربری ثبت نشده."
-                )
-                return
-
-
-            msg = "👥 کاربران:\n\n"
-
-            for user in users[:20]:
-
-                msg += (
-                    f"🆔 {user[0]}\n"
-                    f"👤 {user[1] or 'بدون یوزرنیم'}\n"
-                    f"نام: {user[2]}\n\n"
-                )
-
-
-            await update.message.reply_text(msg)
-
-            return
+        return
 
 
 
-        if text == "📦 سفارش‌ها":
+    # دریافت متن پیام
 
-            orders_list = await get_orders()
-
-            if not orders_list:
-                await update.message.reply_text(
-                    "❌ سفارشی وجود ندارد."
-                )
-                return
+    if send_message_mode == "send_text":
 
 
-            msg = "📦 سفارش‌ها:\n\n"
-
-            for order in orders_list[:20]:
-
-                msg += (
-                    f"شماره: {order[0]}\n"
-                    f"کاربر: {order[1]}\n"
-                    f"پلن: {order[2]}\n"
-                    f"مبلغ: {order[3]}\n"
-                    f"وضعیت: {order[4]}\n\n"
-                )
+        await context.bot.send_message(
+            chat_id=send_to_user,
+            text=text
+        )
 
 
-            await update.message.reply_text(msg)
+        await update.message.reply_text(
+            "✅ پیام ارسال شد."
+        )
 
-            return
+
+        send_message_mode = None
+        send_to_user = None
+
+        return
 
 
 
-        if text == "⏳ سفارش‌های در انتظار":
+    # ثبت لینک سرویس
 
-            pending = await get_pending_orders()
+    if config_mode == "get_id":
 
-            if not pending:
-                await update.message.reply_text(
-                    "✅ سفارش در انتظاری نیست."
-                )
-                return
+        try:
 
+            send_to_user = int(text)
 
-            msg = "⏳ سفارش‌های در انتظار:\n\n"
+            config_mode = "get_config"
 
-            for order in pending:
-
-                msg += (
-                    f"🆔 سفارش: {order[0]}\n"
-                    f"کاربر: {order[1]}\n"
-                    f"پلن: {order[2]}\n"
-                    f"مبلغ: {order[3]}\n\n"
-                )
-
-
-            await update.message.reply_text(msg)
-
-            return
-
-
-
-        if text == "📊 آمار فروش":
-
-            count = await get_sales_count()
 
             await update.message.reply_text(
-                f"📊 تعداد فروش موفق: {count}"
+                "🔗 لینک اشتراک را ارسال کنید:"
             )
 
-            return
-        
+
+        except:
+
+            await update.message.reply_text(
+                "❌ آیدی اشتباه است."
+            )
+
+
+        return
+
+
+
+    if config_mode == "get_config":
+
+
+        await save_user_service(
+            send_to_user,
+            text
+        )
+
+
+        await context.bot.send_message(
+            chat_id=send_to_user,
+            text=
+            "✅ سرویس شما فعال شد.\n\n"
+            "📡 لینک اشتراک:\n"
+            f"{text}"
+        )
+
+
+        await update.message.reply_text(
+            "✅ سرویس ثبت شد.\n"
+            "📅 انقضا: ۳۰ روز دیگر"
+        )
+
+
+        config_mode = None
+        send_to_user = None
+
+
+        return        
         
     # ================= بازگشت =================
 
@@ -464,9 +419,10 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             msg += (
                 f"📦 پلن: {service[0]}\n"
-                f"💰 مبلغ: {service[1]}\n"
-                f"🔗 لینک اشتراک:\n{service[2] or 'ثبت نشده'}\n\n"
-                f"📅 تاریخ انقضا: {service[3] or 'ثبت نشده'}\n"
+                f"💰 مبلغ: {service[1]}\n\n"
+                f"🔗 لینک اشتراک:\n"
+                f"{service[2]}\n\n"
+                f"📅 تاریخ انقضا: {service[3]}\n"
                 f"✅ وضعیت: فعال\n\n"
             )
 
@@ -614,7 +570,9 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    global send_to_user, config_mode
+    global send_to_user
+    global send_message_mode
+    global config_mode
 
     query = update.callback_query
 
