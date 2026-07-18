@@ -234,7 +234,12 @@ async def get_user_active_orders(user_id):
 
         cursor = await db.execute(
             """
-            SELECT *
+            SELECT 
+                plan,
+                price,
+                config,
+                expire_date
+
             FROM orders
 
             WHERE user_id = ?
@@ -285,5 +290,40 @@ async def update_order_config(user_id, config, expire_date):
             )
         )
 
+
+        await db.commit()
+
+async def save_user_service(user_id, config):
+
+    from datetime import datetime, timedelta
+
+    expire_date = (
+        datetime.now() + timedelta(days=30)
+    ).strftime("%Y-%m-%d")
+
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute(
+            """
+            UPDATE orders
+
+            SET 
+            config = ?,
+            expire_date = ?,
+            status = 'approved'
+
+            WHERE user_id = ?
+
+            ORDER BY id DESC
+            LIMIT 1
+
+            """,
+            (
+                config,
+                expire_date,
+                user_id
+            )
+        )
 
         await db.commit()

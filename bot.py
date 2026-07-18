@@ -11,6 +11,8 @@ from database import (
     get_user_active_orders,
 )
 
+from database import save_user_service
+
 import os
 
 from telegram import (
@@ -83,6 +85,7 @@ orders = {}
 
 send_to_user = None
 send_message_mode = None
+config_mode = None
 
 # ================= منوها =================
 
@@ -145,7 +148,8 @@ def admin_menu():
             ["📦 سفارش‌ها"],
             ["⏳ سفارش‌های در انتظار"],
             ["📊 آمار فروش"],
-            ["📨 ارسال پیام"]
+            ["📨 ارسال پیام"],
+            ["📡 ثبت اشتراک"]
         ],
         resize_keyboard=True
     )
@@ -211,6 +215,15 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
 
+        if text == "📡 ثبت اشتراک":
+
+            config_mode = "get_user"
+
+            await update.message.reply_text(
+                "🆔 آیدی کاربر را ارسال کنید:"
+            )
+    
+            return
 
         if send_message_mode == "get_id":
 
@@ -235,21 +248,39 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
-        if send_message_mode == "send_text":
+if send_message_mode == "send_text":
 
-            await context.bot.send_message(
-                chat_id=send_to_user,
-                text=text
-            )
-
-
-            await update.message.reply_text(
-                "✅ پیام ارسال شد."
-            )
+    await context.bot.send_message(
+        chat_id=send_to_user,
+        text=text
+    )
 
 
-            send_message_mode = None
-            send_to_user = None
+    # ذخیره لینک سرویس
+    if "://" in text:
+
+        await save_user_service(
+            send_to_user,
+            text
+        )
+
+
+        await update.message.reply_text(
+            "✅ لینک سرویس ارسال و ذخیره شد.\n"
+            "📅 انقضا: ۳۰ روز دیگر"
+        )
+
+    else:
+
+        await update.message.reply_text(
+            "✅ پیام ارسال شد."
+        )
+
+
+    send_message_mode = None
+    send_to_user = None
+
+    return
 
             return
         if text == "👥 کاربران":
@@ -407,42 +438,45 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
 
-    # ================= سرویس من =================
+# ================= سرویس من =================
 
-    if text == "📡 سرویس من":
+if text == "📡 سرویس من":
 
-        services = await get_user_active_orders(user_id)
-
-
-        if not services:
-
-            await update.message.reply_text(
-                "❌ هنوز سرویس فعالی ندارید.",
-                reply_markup=main_menu()
-            )
-
-            return
+    services = await get_user_active_orders(user_id)
 
 
-        msg = "📡 سرویس‌های فعال شما:\n\n"
-
-
-        for service in services:
-
-            msg += (
-                f"📦 پلن: {service[2]}\n"
-                f"💰 مبلغ: {service[3]}\n"
-                f"✅ وضعیت: فعال\n\n"
-            )
-
+    if not services:
 
         await update.message.reply_text(
-            msg,
+            "❌ هنوز سرویس فعالی ندارید.",
             reply_markup=main_menu()
         )
 
         return
 
+
+    msg = "📡 سرویس‌های فعال شما:\n\n"
+
+
+    for service in services:
+
+        msg += (
+            f"📦 پلن: {service[0]}\n"
+            f"💰 مبلغ: {service[1]}\n\n"
+            f"🔗 لینک اشتراک:\n"
+            f"{service[2]}\n\n"
+            f"📅 تاریخ انقضا: {service[3]}\n"
+            f"✅ وضعیت: فعال\n\n"
+            "━━━━━━━━━━━━━━\n\n"
+        )
+
+
+    await update.message.reply_text(
+        msg,
+        reply_markup=main_menu()
+    )
+
+    return
     # ================= خرید VPN =================
 
     if text == "💳 خرید VPN":
@@ -578,7 +612,7 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    global send_to_user
+    global send_to_user, config_mode
 
     query = update.callback_query
 
