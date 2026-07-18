@@ -141,24 +141,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_id = update.message.from_user.id
 
-if user_id == ADMIN_ID:
 
-    await update.message.reply_text(
-        "👑 پنل مدیریت VpnOne",
-        reply_markup=admin_menu()
-    )
-    return
+    if user_id == ADMIN_ID:
+
+        await update.message.reply_text(
+            "👑 پنل مدیریت VpnOne",
+            reply_markup=admin_menu()
+        )
+
+        return
+
 
     await update.message.reply_text(
         "👋 به VpnOne خوش آمدید",
         reply_markup=main_menu()
     )
-
-    await add_user(
-        user_id,
-        update.message.from_user.username,
-        update.message.from_user.first_name
-)
 # ================= مدیریت پیام ها =================
 
 async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
