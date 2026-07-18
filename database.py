@@ -143,9 +143,13 @@ async def update_order_status(user_id, status):
             """
             UPDATE orders
             SET status = ?
-            WHERE user_id = ?
-            ORDER BY id DESC
-            LIMIT 1
+            WHERE id = (
+                SELECT id
+                FROM orders
+                WHERE user_id = ?
+                ORDER BY id DESC
+                LIMIT 1
+            )
             """,
             (
                 status,
