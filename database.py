@@ -215,7 +215,12 @@ async def get_user_active_orders(user_id):
             (user_id,)
         )
 
-        return await cursor.fetchall()
+        result = await cursor.fetchall()
+
+        print("USER ID:", user_id)
+        print("ACTIVE ORDERS:", result)
+
+        return result
 
 
 async def save_user_service(user_id, config):
