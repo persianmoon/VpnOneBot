@@ -17,7 +17,7 @@ from telegram.ext import (
 
 # ================= تنظیمات =================
 
-TOKEN = "bot-token"
+TOKEN = "8277846112:AAF0nYGl7z2nNhaNqyzsqiG37At4Vwua8Jc"
 
 ADMIN_ID = 24734452
 
@@ -30,7 +30,7 @@ ANDROID_TUTORIAL = "https://t.me/vpnoneorg/27"
 
 IOS_TUTORIAL = "https://t.me/vpnoneorg/5"
 
-WINDOWS_TUTORIAL = "https://t.me/YourChannel/12"
+WINDOWS_TUTORIAL = "https://t.me/vpnoneorg/29"
 
 
 
@@ -482,3 +482,4 @@ print("VpnOne Bot Running...")
 
 
 app.run_polling()
+
