@@ -134,3 +134,41 @@ async def get_sales_count():
         result = await cursor.fetchone()
 
         return result[0]
+    
+    async def update_order_status(user_id, status):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute(
+            """
+            UPDATE orders
+            SET status = ?
+            WHERE user_id = ?
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (
+                status,
+                user_id
+            )
+        )
+
+        await db.commit()
+
+
+
+async def get_user_orders(user_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT *
+            FROM orders
+            WHERE user_id = ?
+            ORDER BY id DESC
+            """,
+            (user_id,)
+        )
+
+        return await cursor.fetchall()

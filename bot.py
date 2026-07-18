@@ -5,7 +5,9 @@ from database import (
     get_users,
     get_orders,
     get_pending_orders,
-    get_sales_count
+    get_sales_count,
+    update_order_status,
+    get_user_orders
 )
 
 import os
@@ -501,7 +503,10 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if action == "ok":
 
         send_to_user = user_id
-
+        await update_order_status(
+            user_id,
+            "approved"
+        )
 
         await context.bot.send_message(
 
@@ -524,7 +529,10 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         )
 
-
+        await update_order_status(
+            user_id,
+            "rejected"
+        )
     else:
 
         await context.bot.send_message(
