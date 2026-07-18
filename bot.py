@@ -81,7 +81,7 @@ PLANS = {
 orders = {}
 
 send_to_user = None
-
+send_message_mode = None
 
 # ================= منوها =================
 
@@ -142,7 +142,8 @@ def admin_menu():
             ["👥 کاربران"],
             ["📦 سفارش‌ها"],
             ["⏳ سفارش‌های در انتظار"],
-            ["📊 آمار فروش"]
+            ["📊 آمار فروش"],
+            ["📨 ارسال پیام"]
         ],
         resize_keyboard=True
     )
@@ -191,11 +192,64 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
     # ================= ادمین =================
-    # ================= ادمین =================
 
     if user_id == ADMIN_ID:
 
+        global send_message_mode, send_to_user
 
+
+        if text == "📨 ارسال پیام":
+
+            send_message_mode = "get_id"
+
+            await update.message.reply_text(
+                "🆔 آیدی عددی کاربر را ارسال کنید:"
+            )
+
+            return
+
+
+
+        if send_message_mode == "get_id":
+
+            try:
+
+                send_to_user = int(text)
+
+                send_message_mode = "send_text"
+
+
+                await update.message.reply_text(
+                    "✏️ متن پیام را ارسال کنید:"
+                )
+
+            except:
+
+                await update.message.reply_text(
+                    "❌ آیدی باید عدد باشد."
+                )
+
+            return
+
+
+
+        if send_message_mode == "send_text":
+
+            await context.bot.send_message(
+                chat_id=send_to_user,
+                text=text
+            )
+
+
+            await update.message.reply_text(
+                "✅ پیام ارسال شد."
+            )
+
+
+            send_message_mode = None
+            send_to_user = None
+
+            return
         if text == "👥 کاربران":
 
             users = await get_users()
