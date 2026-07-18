@@ -419,8 +419,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"📦 پلن: {service[0]}\n"
                 f"💰 مبلغ: {service[1]}\n\n"
                 f"🔗 لینک اشتراک:\n"
-                f"{service[2]}\n\n"
-                f"📅 تاریخ انقضا: {service[3]}\n"
+                f"{service[2] if service[2] else 'ثبت نشده'}\n\n"
+                f"📅 تاریخ انقضا: "
+                f"{service[3] if service[3] else 'ثبت نشده'}\n\n"
                 f"✅ وضعیت: فعال\n\n"
             )
 

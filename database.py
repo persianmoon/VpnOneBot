@@ -218,7 +218,6 @@ async def get_user_active_orders(user_id):
         return await cursor.fetchall()
 
 
-
 async def save_user_service(user_id, config):
 
     expire_date = (
@@ -231,22 +230,18 @@ async def save_user_service(user_id, config):
         await db.execute(
             """
             UPDATE orders
-
             SET
                 config = ?,
                 expire_date = ?,
                 status = 'approved'
 
             WHERE id = (
-
                 SELECT id
                 FROM orders
                 WHERE user_id = ?
                 ORDER BY id DESC
                 LIMIT 1
-
             )
-
             """,
             (
                 config,
@@ -254,5 +249,6 @@ async def save_user_service(user_id, config):
                 user_id
             )
         )
+
 
         await db.commit()
