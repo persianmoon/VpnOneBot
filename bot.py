@@ -407,42 +407,41 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
 
-# ================= سرویس من =================
+    # ================= سرویس من =================
 
-if text == "📡 سرویس من":
+    if text == "📡 سرویس من":
 
-    services = await get_user_active_orders(user_id)
+        services = await get_user_active_orders(user_id)
 
 
-    if not services:
+        if not services:
+
+            await update.message.reply_text(
+                "❌ هنوز سرویس فعالی ندارید.",
+                reply_markup=main_menu()
+            )
+
+            return
+
+
+        msg = "📡 سرویس‌های فعال شما:\n\n"
+
+
+        for service in services:
+
+            msg += (
+                f"📦 پلن: {service[2]}\n"
+                f"💰 مبلغ: {service[3]}\n"
+                f"✅ وضعیت: فعال\n\n"
+            )
+
 
         await update.message.reply_text(
-            "❌ هنوز سرویس فعالی ندارید.",
+            msg,
             reply_markup=main_menu()
         )
 
         return
-
-
-    msg = "📡 سرویس‌های فعال شما:\n\n"
-
-
-    for service in services:
-
-        msg += (
-            f"📦 پلن: {service[2]}\n"
-            f"💰 مبلغ: {service[3]}\n"
-            f"✅ وضعیت: فعال\n\n"
-        )
-
-
-    await update.message.reply_text(
-        msg,
-        reply_markup=main_menu()
-    )
-
-    return
-
 
     # ================= خرید VPN =================
 
