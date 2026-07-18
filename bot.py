@@ -1,3 +1,4 @@
+from database import init_db, add_user, add_order
 import os
 
 from telegram import (
@@ -138,7 +139,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=main_menu()
     )
 
-
+    await add_user(
+        user_id,
+        update.message.from_user.username,
+        update.message.from_user.first_name
+)
 # ================= مدیریت پیام ها =================
 
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -271,7 +276,12 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "📸 لطفاً رسید پرداخت را ارسال کنید."
 
         )
-
+        
+        await add_order(
+            user_id,
+            PLANS[text]["name"],
+            PLANS[text]["price"]
+        )
         return
 
 
@@ -455,5 +465,8 @@ app.add_handler(
 
 print("VpnOne Bot Running...")
 
+import asyncio
+
+asyncio.run(init_db())
 
 app.run_polling()
