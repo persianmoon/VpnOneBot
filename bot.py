@@ -494,45 +494,49 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.answer()
 
-
     action, user_id = query.data.split("|")
 
     user_id = int(user_id)
 
 
-if action == "ok":
+    if action == "ok":
 
-    send_to_user = user_id
-
-    await update_order_status(
-        user_id,
-        "approved"
-    )
+        send_to_user = user_id
 
 
-    await context.bot.send_message(
-        chat_id=user_id,
-        text=
-        "✅ پرداخت تایید شد.\n"
-        "در حال ارسال سرویس..."
-    )
+        await update_order_status(
+            user_id,
+            "approved"
+        )
 
-
-    await context.bot.send_message(
-        chat_id=ADMIN_ID,
-        text=
-        "✅ کاربر تایید شد.\n"
-        "اکنون لینک، QR، فایل یا کانفیگ را ارسال کنید."
-    )
-
-else:
 
         await context.bot.send_message(
-
             chat_id=user_id,
+            text=
+            "✅ پرداخت تایید شد.\n"
+            "در حال ارسال سرویس..."
+        )
 
+
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=
+            "✅ کاربر تایید شد.\n"
+            "اکنون لینک، QR، فایل یا کانفیگ را ارسال کنید."
+        )
+
+
+    elif action == "no":
+
+        await update_order_status(
+            user_id,
+            "rejected"
+        )
+
+
+        await context.bot.send_message(
+            chat_id=user_id,
             text="❌ پرداخت شما رد شد."
-
         )
 
 
