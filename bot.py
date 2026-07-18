@@ -524,7 +524,8 @@ if action == "ok":
         "✅ کاربر تایید شد.\n"
         "اکنون لینک، QR، فایل یا کانفیگ را ارسال کنید."
     )
-    else:
+
+else:
 
         await context.bot.send_message(
 
