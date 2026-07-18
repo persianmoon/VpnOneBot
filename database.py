@@ -4,9 +4,11 @@ import aiosqlite
 DB_NAME = "vpnone.db"
 
 
+
 async def init_db():
 
     async with aiosqlite.connect(DB_NAME) as db:
+
 
         await db.execute("""
         CREATE TABLE IF NOT EXISTS users (
@@ -32,7 +34,27 @@ async def init_db():
         """)
 
 
+        # اضافه کردن ستون کانفیگ
+        try:
+            await db.execute(
+                "ALTER TABLE orders ADD COLUMN config TEXT"
+            )
+        except:
+            pass
+
+
+        # اضافه کردن تاریخ انقضا
+        try:
+            await db.execute(
+                "ALTER TABLE orders ADD COLUMN expire_date TEXT"
+            )
+        except:
+            pass
+
+
         await db.commit()
+
+
 
 
 
@@ -58,6 +80,8 @@ async def add_user(user_id, username, first_name):
 
 
 
+
+
 async def add_order(user_id, plan, price):
 
     async with aiosqlite.connect(DB_NAME) as db:
@@ -78,7 +102,11 @@ async def add_order(user_id, plan, price):
         )
 
         await db.commit()
-        
+
+
+
+
+
 async def get_users():
 
     async with aiosqlite.connect(DB_NAME) as db:
@@ -91,6 +119,8 @@ async def get_users():
 
 
 
+
+
 async def get_orders():
 
     async with aiosqlite.connect(DB_NAME) as db:
@@ -100,6 +130,8 @@ async def get_orders():
         )
 
         return await cursor.fetchall()
+
+
 
 
 
@@ -119,6 +151,8 @@ async def get_pending_orders():
 
 
 
+
+
 async def get_sales_count():
 
     async with aiosqlite.connect(DB_NAME) as db:
@@ -134,7 +168,12 @@ async def get_sales_count():
         result = await cursor.fetchone()
 
         return result[0]
-    
+
+
+
+
+
+
 async def update_order_status(user_id, status):
 
     async with aiosqlite.connect(DB_NAME) as db:
@@ -142,14 +181,19 @@ async def update_order_status(user_id, status):
         await db.execute(
             """
             UPDATE orders
+
             SET status = ?
+
             WHERE id = (
+
                 SELECT id
                 FROM orders
                 WHERE user_id = ?
                 ORDER BY id DESC
                 LIMIT 1
+
             )
+
             """,
             (
                 status,
@@ -157,7 +201,10 @@ async def update_order_status(user_id, status):
             )
         )
 
+
         await db.commit()
+
+
 
 
 
@@ -177,6 +224,10 @@ async def get_user_orders(user_id):
 
         return await cursor.fetchall()
 
+
+
+
+
 async def get_user_active_orders(user_id):
 
     async with aiosqlite.connect(DB_NAME) as db:
@@ -185,11 +236,54 @@ async def get_user_active_orders(user_id):
             """
             SELECT *
             FROM orders
+
             WHERE user_id = ?
             AND status = 'approved'
+
             ORDER BY id DESC
+
             """,
             (user_id,)
         )
 
+
         return await cursor.fetchall()
+
+
+
+
+
+
+async def update_order_config(user_id, config, expire_date):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+
+        await db.execute(
+            """
+            UPDATE orders
+
+            SET 
+            config = ?,
+            expire_date = ?
+
+            WHERE id = (
+
+                SELECT id
+                FROM orders
+                WHERE user_id = ?
+                ORDER BY id DESC
+                LIMIT 1
+
+            )
+
+            """,
+            (
+                config,
+                expire_date,
+                user_id
+            )
+        )
+
+
+        await db.commit()
