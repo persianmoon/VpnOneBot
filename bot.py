@@ -200,40 +200,57 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
 
 
-    # ================= ادمین =================
+# ================= ادمین =================
 
-    if user_id == ADMIN_ID:
+if user_id == ADMIN_ID:
+
 
     if text == "👥 کاربران":
+
         users = await get_users()
 
         if not users:
-            await update.message.reply_text("❌ هنوز کاربری ثبت نشده.")
+            await update.message.reply_text(
+                "❌ هنوز کاربری ثبت نشده."
+            )
             return
+
 
         msg = "👥 کاربران:\n\n"
 
         for user in users[:20]:
+
             msg += (
                 f"🆔 {user[0]}\n"
                 f"👤 {user[1] or 'بدون یوزرنیم'}\n"
                 f"نام: {user[2]}\n\n"
             )
 
+
         await update.message.reply_text(msg)
+
         return
 
 
+
     if text == "📦 سفارش‌ها":
+
         orders_list = await get_orders()
 
         if not orders_list:
-            await update.message.reply_text("❌ سفارشی وجود ندارد.")
+
+            await update.message.reply_text(
+                "❌ سفارشی وجود ندارد."
+            )
+
             return
+
 
         msg = "📦 سفارش‌ها:\n\n"
 
+
         for order in orders_list[:20]:
+
             msg += (
                 f"شماره: {order[0]}\n"
                 f"کاربر: {order[1]}\n"
@@ -242,20 +259,32 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"وضعیت: {order[4]}\n\n"
             )
 
+
         await update.message.reply_text(msg)
+
         return
 
 
+
     if text == "⏳ سفارش‌های در انتظار":
+
         pending = await get_pending_orders()
 
+
         if not pending:
-            await update.message.reply_text("✅ سفارش در انتظاری نیست.")
+
+            await update.message.reply_text(
+                "✅ سفارش در انتظاری نیست."
+            )
+
             return
+
 
         msg = "⏳ سفارش‌های در انتظار:\n\n"
 
+
         for order in pending:
+
             msg += (
                 f"🆔 سفارش: {order[0]}\n"
                 f"کاربر: {order[1]}\n"
@@ -263,11 +292,15 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"مبلغ: {order[3]}\n\n"
             )
 
+
         await update.message.reply_text(msg)
+
         return
 
 
+
     if text == "📊 آمار فروش":
+
         count = await get_sales_count()
 
         await update.message.reply_text(
@@ -277,7 +310,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
 
+
     if text == "📨 ارسال پیام":
+
         send_message_mode = "get_id"
 
         await update.message.reply_text(
@@ -287,7 +322,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
 
+
     if text == "📡 ثبت اشتراک":
+
         config_mode = "get_id"
 
         await update.message.reply_text(
@@ -295,200 +332,6 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         return
-
-
-
-    # دریافت آیدی برای پیام
-
-    if send_message_mode == "get_id":
-
-        try:
-
-            send_to_user = int(text)
-
-            send_message_mode = "send_text"
-
-
-            await update.message.reply_text(
-                "✏️ متن پیام را ارسال کنید:"
-            )
-
-
-        except:
-
-            await update.message.reply_text(
-                "❌ آیدی اشتباه است."
-            )
-
-
-        return
-
-
-
-    # دریافت متن پیام
-
-    if send_message_mode == "send_text":
-
-
-        await context.bot.send_message(
-            chat_id=send_to_user,
-            text=text
-        )
-
-
-        await update.message.reply_text(
-            "✅ پیام ارسال شد."
-        )
-
-
-        send_message_mode = None
-        send_to_user = None
-
-        return
-    
-            # ================= کاربران =================
-
-        if text == "👥 کاربران":
-
-            users = await get_users()
-
-            if not users:
-                await update.message.reply_text("❌ هنوز کاربری ثبت نشده.")
-                return
-
-            msg = "👥 کاربران:\n\n"
-
-            for user in users[:20]:
-                msg += (
-                    f"🆔 {user[0]}\n"
-                    f"👤 {user[1] or 'بدون یوزرنیم'}\n"
-                    f"نام: {user[2]}\n\n"
-                )
-
-            await update.message.reply_text(msg)
-            return
-
-
-        # ================= سفارش‌ها =================
-
-        if text == "📦 سفارش‌ها":
-
-            orders_list = await get_orders()
-
-            if not orders_list:
-                await update.message.reply_text("❌ سفارشی وجود ندارد.")
-                return
-
-            msg = "📦 سفارش‌ها:\n\n"
-
-            for order in orders_list[:20]:
-                msg += (
-                    f"شماره: {order[0]}\n"
-                    f"کاربر: {order[1]}\n"
-                    f"پلن: {order[2]}\n"
-                    f"مبلغ: {order[3]}\n"
-                    f"وضعیت: {order[4]}\n\n"
-                )
-
-            await update.message.reply_text(msg)
-            return
-
-
-        # ================= سفارش‌های در انتظار =================
-
-        if text == "⏳ سفارش‌های در انتظار":
-
-            pending = await get_pending_orders()
-
-            if not pending:
-                await update.message.reply_text("✅ سفارش در انتظاری نیست.")
-                return
-
-            msg = "⏳ سفارش‌های در انتظار:\n\n"
-
-            for order in pending:
-                msg += (
-                    f"🆔 سفارش: {order[0]}\n"
-                    f"کاربر: {order[1]}\n"
-                    f"پلن: {order[2]}\n"
-                    f"مبلغ: {order[3]}\n\n"
-                )
-
-            await update.message.reply_text(msg)
-            return
-
-
-        # ================= آمار فروش =================
-
-        if text == "📊 آمار فروش":
-
-            count = await get_sales_count()
-
-            await update.message.reply_text(
-                f"📊 تعداد فروش موفق: {count}"
-            )
-
-            return
-
-
-
-    # ثبت لینک سرویس
-
-    if config_mode == "get_id":
-
-        try:
-
-            send_to_user = int(text)
-
-            config_mode = "get_config"
-
-
-            await update.message.reply_text(
-                "🔗 لینک اشتراک را ارسال کنید:"
-            )
-
-
-        except:
-
-            await update.message.reply_text(
-                "❌ آیدی اشتباه است."
-            )
-
-
-        return
-
-
-
-    if config_mode == "get_config":
-
-
-        await save_user_service(
-            send_to_user,
-            text
-        )
-
-
-        await context.bot.send_message(
-            chat_id=send_to_user,
-            text=
-            "✅ سرویس شما فعال شد.\n\n"
-            "📡 لینک اشتراک:\n"
-            f"{text}"
-        )
-
-
-        await update.message.reply_text(
-            "✅ سرویس ثبت شد.\n"
-            "📅 انقضا: ۳۰ روز دیگر"
-        )
-
-
-        config_mode = None
-        send_to_user = None
-
-
-        return        
-        
     # ================= بازگشت =================
 
     if text == "⬅️ بازگشت":
