@@ -317,3 +317,21 @@ async def save_user_service(user_id, config, username, first_name):
             )
         )
         await db.commit()
+        
+async def get_user_active_service(user_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT config, expire_date
+            FROM orders
+            WHERE user_id = ?
+            AND status = 'approved'
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (user_id,)
+        )
+
+        return await cursor.fetchone()

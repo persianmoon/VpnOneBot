@@ -9,6 +9,7 @@ from database import (
     update_order_status,
     get_user_orders,
     get_user_active_orders,
+    get_user_active_service,
 )
 
 from database import save_user_service
@@ -221,31 +222,46 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id == ADMIN_ID:
 
 
-        if text == "👥 کاربران":
+       if text == "👥 کاربران":
 
-            users = await get_users()
+    users = await get_users()
 
-            if not users:
-                await update.message.reply_text(
-                    "❌ هنوز کاربری ثبت نشده."
-                )
-                return
-
-
-            msg = "👥 کاربران:\n\n"
-
-            for user in users[:20]:
-
-                msg += (
-                    f"🆔 {user[0]}\n"
-                    f"👤 {user[1] or 'بدون یوزرنیم'}\n"
-                    f"نام: {user[2]}\n\n"
-                )
+    if not users:
+        await update.message.reply_text(
+            "❌ هنوز کاربری ثبت نشده."
+        )
+        return
 
 
-            await update.message.reply_text(msg)
+    msg = "👥 کاربران:\n\n"
 
-            return
+
+    for user in users[:20]:
+
+        service = await get_user_active_service(user[0])
+
+
+        if service:
+            config = service[0]
+            expire = service[1]
+        else:
+            config = "❌ ندارد"
+            expire = "❌ ندارد"
+
+
+        msg += (
+            f"🆔 {user[0]}\n"
+            f"👤 {user[1] or 'بدون یوزرنیم'}\n"
+            f"👨 {user[2]}\n"
+            f"📡 لینک اشتراک:\n{config}\n"
+            f"📅 انقضا: {expire}\n\n"
+            "━━━━━━━━━━━━\n\n"
+        )
+
+
+    await update.message.reply_text(msg)
+
+    return
 
 
 
