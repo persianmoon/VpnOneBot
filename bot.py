@@ -3,6 +3,7 @@ from database import (
     add_user,
     add_order,
     get_users,
+    get_user,
     get_orders,
     get_pending_orders,
     get_sales_count,
