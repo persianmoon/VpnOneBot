@@ -380,6 +380,64 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
             return
+        
+            # دریافت آیدی برای ثبت اشتراک
+
+    if config_mode == "get_id":
+
+        try:
+
+            send_to_user = int(text)
+
+            config_mode = "get_config"
+
+
+            await update.message.reply_text(
+                "🔗 لینک اشتراک را ارسال کنید:"
+            )
+
+
+        except:
+
+            await update.message.reply_text(
+                "❌ آیدی اشتباه است."
+            )
+
+        return
+
+
+
+    # دریافت لینک اشتراک
+
+    if config_mode == "get_config":
+
+
+        await save_user_service(
+            send_to_user,
+            text
+        )
+
+
+        await context.bot.send_message(
+            chat_id=send_to_user,
+            text=
+            "✅ سرویس شما فعال شد.\n\n"
+            "📡 لینک اشتراک:\n"
+            f"{text}"
+        )
+
+
+        await update.message.reply_text(
+            "✅ سرویس ثبت شد."
+        )
+
+
+        config_mode = None
+        send_to_user = None
+
+
+        return
+
     # ================= بازگشت =================
 
     if text == "⬅️ بازگشت":
