@@ -10,6 +10,19 @@ async def init_db():
 
     async with aiosqlite.connect(DB_NAME) as db:
 
+        # ساخت جدول کاربران
+        await db.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+
+            id INTEGER PRIMARY KEY,
+            username TEXT,
+            first_name TEXT
+
+        )
+        """)
+
+
+        # ساخت جدول سفارشات
         await db.execute("""
         CREATE TABLE IF NOT EXISTS orders (
 
