@@ -156,9 +156,6 @@ def admin_menu():
 # ================= شروع =================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    
-    print("START CALLED")
-
 
     user_id = update.message.from_user.id
 
@@ -779,3 +776,22 @@ app.add_handler(
         message_handler
     )
 )
+
+print("VpnOne Bot Running...")
+
+
+import asyncio
+
+
+async def main():
+
+    await init_db()
+
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+
+    await asyncio.Event().wait()
+
+
+asyncio.run(main())
