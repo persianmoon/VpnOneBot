@@ -51,8 +51,9 @@ async def init_db():
         except:
             pass
 
-
+        
         await db.commit()
+        print("DATABASE INITIALIZED")
 
 
 
