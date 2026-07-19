@@ -157,7 +157,15 @@ def admin_menu():
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    user_id = update.message.from_user.id
+    user = update.message.from_user
+
+    await add_user(
+        user.id,
+        user.username,
+        user.first_name
+    )
+
+    user_id = user.id
 
 
     if user_id == ADMIN_ID:
