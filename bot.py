@@ -156,6 +156,9 @@ def admin_menu():
 # ================= شروع =================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
+    print("START CALLED")
+
 
     user_id = update.message.from_user.id
 
