@@ -665,7 +665,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             "به نام میلاد رحیمی\n\n"
 
-            "📸 لطفاً رسید پرداخت را ارسال کنید."
+            "📸 لطفاً رسید پرداخت را ارسال کنید.",
             
             parse_mode="Markdown"
 
