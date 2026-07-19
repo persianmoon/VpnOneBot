@@ -351,3 +351,18 @@ async def delete_user(user_id):
         )
 
         await db.commit()
+        
+async def get_user(user_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT username, first_name
+            FROM users
+            WHERE id = ?
+            """,
+            (user_id,)
+        )
+
+        return await cursor.fetchone()
