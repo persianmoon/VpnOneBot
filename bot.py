@@ -350,60 +350,41 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # ارسال پیام به کاربر
 
-    if send_message_mode == "send_text":
+if text == "📡 ثبت اشتراک":
+
+    config_mode = "get_id"
+    send_message_mode = None
+
+    await update.message.reply_text(
+        "🆔 آیدی کاربر را ارسال کنید:"
+    )
+
+    return
 
 
-        await context.bot.send_message(
-            chat_id=send_to_user,
-            text=text
-        )
+# دریافت آیدی برای ثبت اشتراک
+
+if config_mode == "get_id":
+
+    try:
+
+        send_to_user = int(text)
+
+        config_mode = "get_config"
 
 
         await update.message.reply_text(
-            "✅ پیام ارسال شد."
+            "🔗 لینک اشتراک را ارسال کنید:"
         )
 
 
-        send_message_mode = None
-        send_to_user = None
+    except:
 
+        await update.message.reply_text(
+            "❌ آیدی اشتباه است."
+        )
 
-        return
-
-        if text == "📡 ثبت اشتراک":
-
-            config_mode = "get_id"
-            send_message_mode = None
-
-            await update.message.reply_text(
-                "🆔 آیدی کاربر را ارسال کنید:"
-            )
-
-            return
-        
-            # دریافت آیدی برای ثبت اشتراک
-
-            if config_mode == "get_id":
-
-                try:
-
-                    send_to_user = int(text)
-
-                    config_mode = "get_config"
-
-
-                    await update.message.reply_text(
-                        "🔗 لینک اشتراک را ارسال کنید:"
-                    )
-
-
-                except:
-
-                    await update.message.reply_text(
-                        "❌ آیدی اشتباه است."
-                    )
-
-                return
+    return
 
 
 
