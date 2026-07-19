@@ -227,7 +227,7 @@ async def get_user_active_orders(user_id):
         return result
 
 
-async def save_user_service(user_id, config):
+async def save_user_service(user_id, config, username, first_name):
 
     expire_date = JalaliDate(
         datetime.now() + timedelta(days=30)

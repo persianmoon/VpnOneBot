@@ -197,6 +197,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_id = update.message.from_user.id
     text = update.message.text
+    username = update.message.from_user.username
+    first_name = update.message.from_user.first_name
 
 
 # ================= ادمین =================
@@ -412,7 +414,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             await save_user_service(
                 send_to_user,
-                text
+                text,
+                username,
+                first_name
             )
 
 
