@@ -324,7 +324,7 @@ async def get_user_active_service(user_id):
 
         cursor = await db.execute(
             """
-            SELECT config, expire_date
+            SELECT plan, config, expire_date
             FROM orders
             WHERE user_id = ?
             AND status = 'approved'

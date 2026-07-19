@@ -246,9 +246,11 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 service = await get_user_active_service(user[0])
 
                 if service:
-                    config = service[0]
-                    expire = service[1]
+                    plan = service[0]
+                    config = service[1]
+                    expire = service[2]
                 else:
+                    plan = "❌ ندارد"
                     config = "❌ ندارد"
                     expire = "❌ ندارد"
 
@@ -257,6 +259,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     f"🆔 {user[0]}\n"
                     f"👤 {user[1] or 'بدون یوزرنیم'}\n"
                     f"👨 {user[2]}\n"
+                    f"📦 اشتراک: {plan}\n"
                     f"📡 لینک اشتراک:\n{config}\n"
                     f"📅 انقضا: {expire}\n\n"
                     "━━━━━━━━━━━━\n\n"
