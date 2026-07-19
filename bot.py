@@ -718,13 +718,7 @@ if not TOKEN:
 app = Application.builder().token(TOKEN).build()
 
 
-app.add_handler(
-    MessageHandler(
-        filters.ALL & ~filters.COMMAND,
-        message_handler
-    )
-)
-
+# دستور ادمین
 app.add_handler(
     CommandHandler(
         "admin",
@@ -732,6 +726,8 @@ app.add_handler(
     )
 )
 
+
+# دکمه‌های تایید/رد پرداخت
 app.add_handler(
     CallbackQueryHandler(
         callback_handler
@@ -739,6 +735,7 @@ app.add_handler(
 )
 
 
+# دریافت عکس رسید پرداخت
 app.add_handler(
     MessageHandler(
         filters.PHOTO,
@@ -747,15 +744,17 @@ app.add_handler(
 )
 
 
+# دریافت پیام‌های متنی
 app.add_handler(
     MessageHandler(
-        filters.ALL & ~filters.COMMAND,
-        
+        filters.TEXT & ~filters.COMMAND,
+        message_handler
     )
 )
 
 
 print("VpnOne Bot Running...")
+
 
 import asyncio
 
