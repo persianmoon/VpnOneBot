@@ -497,30 +497,38 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             return
         
-        if config_mode == "delete_user":
+                if text == "🗑 حذف کاربر":
 
-            delete_id = int(text)
+                    config_mode = "delete_user"
 
-            await delete_user(delete_id)
+                    await update.message.reply_text(
+                        "🆔 آیدی کاربری که می‌خواهید حذف کنید را ارسال کنید:"
+                    )
 
-            await update.message.reply_text(
-                "✅ کاربر حذف شد."
-            )
+                    return
 
-            config_mode = None
 
-            return
-        
-        
-        if text == "🗑 حذف کاربر":
+                if config_mode == "delete_user":
 
-            config_mode = "delete_user"
+                    try:
 
-            await update.message.reply_text(
-                "🆔 آیدی کاربری که می‌خواهید حذف کنید را ارسال کنید:"
-            )
+                        delete_id = int(text)
 
-            return
+                        await delete_user(delete_id)
+
+                        await update.message.reply_text(
+                            "✅ کاربر حذف شد."
+                        )
+
+                    except:
+
+                        await update.message.reply_text(
+                            "❌ آیدی نامعتبر است."
+                        )
+
+                    config_mode = None
+
+                    return
 
     # ================= بازگشت =================
 
