@@ -452,6 +452,13 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 username,
                 first_name
             )
+            
+            service = await get_user_active_service(send_to_user)
+
+            if service:
+                expire_date = service[1]
+            else:
+                expire_date = "نامشخص"
 
 
             await context.bot.send_message(
@@ -460,6 +467,18 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 "✅ سرویس شما فعال شد.\n\n"
                    "📡 لینک اشتراک:\n"
                 f"{text}"
+            )
+            
+            
+            await context.bot.send_message(
+                chat_id=ADMIN_ID,
+                text=
+                "✅ اشتراک جدید ثبت شد\n\n"
+                f"🆔 {send_to_user}\n"
+                f"👤 {username or 'بدون یوزرنیم'}\n"
+                f"👨 {first_name}\n"
+                f"📡 لینک اشتراک:\n{text}\n"
+                f"📅 انقضا: {expire_date}"
             )
 
 
