@@ -345,6 +345,90 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         send_to_user = None
 
         return
+    
+            # ================= کاربران =================
+
+        if text == "👥 کاربران":
+
+            users = await get_users()
+
+            if not users:
+                await update.message.reply_text("❌ هنوز کاربری ثبت نشده.")
+                return
+
+            msg = "👥 کاربران:\n\n"
+
+            for user in users[:20]:
+                msg += (
+                    f"🆔 {user[0]}\n"
+                    f"👤 {user[1] or 'بدون یوزرنیم'}\n"
+                    f"نام: {user[2]}\n\n"
+                )
+
+            await update.message.reply_text(msg)
+            return
+
+
+        # ================= سفارش‌ها =================
+
+        if text == "📦 سفارش‌ها":
+
+            orders_list = await get_orders()
+
+            if not orders_list:
+                await update.message.reply_text("❌ سفارشی وجود ندارد.")
+                return
+
+            msg = "📦 سفارش‌ها:\n\n"
+
+            for order in orders_list[:20]:
+                msg += (
+                    f"شماره: {order[0]}\n"
+                    f"کاربر: {order[1]}\n"
+                    f"پلن: {order[2]}\n"
+                    f"مبلغ: {order[3]}\n"
+                    f"وضعیت: {order[4]}\n\n"
+                )
+
+            await update.message.reply_text(msg)
+            return
+
+
+        # ================= سفارش‌های در انتظار =================
+
+        if text == "⏳ سفارش‌های در انتظار":
+
+            pending = await get_pending_orders()
+
+            if not pending:
+                await update.message.reply_text("✅ سفارش در انتظاری نیست.")
+                return
+
+            msg = "⏳ سفارش‌های در انتظار:\n\n"
+
+            for order in pending:
+                msg += (
+                    f"🆔 سفارش: {order[0]}\n"
+                    f"کاربر: {order[1]}\n"
+                    f"پلن: {order[2]}\n"
+                    f"مبلغ: {order[3]}\n\n"
+                )
+
+            await update.message.reply_text(msg)
+            return
+
+
+        # ================= آمار فروش =================
+
+        if text == "📊 آمار فروش":
+
+            count = await get_sales_count()
+
+            await update.message.reply_text(
+                f"📊 تعداد فروش موفق: {count}"
+            )
+
+            return
 
 
 
