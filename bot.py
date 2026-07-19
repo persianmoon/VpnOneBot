@@ -240,28 +240,27 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 service = await get_user_active_service(user[0])
 
-
-        if service:
-            config = service[0]
-            expire = service[1]
-        else:
-            config = "❌ ندارد"
-            expire = "❌ ندارد"
-
-
-        msg += (
-            f"🆔 {user[0]}\n"
-            f"👤 {user[1] or 'بدون یوزرنیم'}\n"
-            f"👨 {user[2]}\n"
-            f"📡 لینک اشتراک:\n{config}\n"
-            f"📅 انقضا: {expire}\n\n"
-            "━━━━━━━━━━━━\n\n"
-        )
+                if service:
+                    config = service[0]
+                    expire = service[1]
+                else:
+                    config = "❌ ندارد"
+                    expire = "❌ ندارد"
 
 
-    await update.message.reply_text(msg)
+                msg += (
+                    f"🆔 {user[0]}\n"
+                    f"👤 {user[1] or 'بدون یوزرنیم'}\n"
+                    f"👨 {user[2]}\n"
+                    f"📡 لینک اشتراک:\n{config}\n"
+                    f"📅 انقضا: {expire}\n\n"
+                    "━━━━━━━━━━━━\n\n"
+                )
 
-    return
+
+            await update.message.reply_text(msg)
+
+            return
 
 
 
