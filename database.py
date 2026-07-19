@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from persiantools.jdatetime import JalaliDate
 
 
-DB_NAME = "vpnone.db"
+DB_NAME = "/app/data/vpnone.db"
 
 
 async def init_db():
