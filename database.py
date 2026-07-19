@@ -49,10 +49,16 @@ async def add_user(user_id, username, first_name):
 
         await db.execute(
             """
-            INSERT OR IGNORE INTO users
+            INSERT INTO users
             (id, username, first_name)
 
             VALUES (?, ?, ?)
+
+            ON CONFLICT(id) DO UPDATE SET
+
+            username = excluded.username,
+            first_name = excluded.first_name
+
             """,
             (
                 user_id,

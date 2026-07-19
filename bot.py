@@ -209,6 +209,13 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     first_name = update.message.from_user.first_name
 
 
+    await add_user(
+        user_id,
+        username,
+        first_name
+    )
+
+
 # ================= ادمین =================
 
     if user_id == ADMIN_ID:
