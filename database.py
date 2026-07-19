@@ -259,5 +259,17 @@ async def save_user_service(user_id, config):
             )
         )
 
+        await db.execute(
+            """
+            INSERT OR IGNORE INTO users
+            (id, username, first_name)
 
+            VALUES (?, ?, ?)
+            """,
+            (
+                user_id,
+                None,
+                None
+            )
+        )
         await db.commit()
