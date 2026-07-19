@@ -41,7 +41,7 @@ TOKEN = os.getenv("BOT_TOKEN")
 
 ADMIN_ID = 24734452
 
-CARD_NUMBER = "5022-2910-5931-2742"
+CARD_NUMBER = "`5022-2910-5931-2742`"
 
 
 # ================= آموزش ها =================
@@ -666,6 +666,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "به نام میلاد رحیمی\n\n"
 
             "📸 لطفاً رسید پرداخت را ارسال کنید."
+            
+            parse_mode="Markdown"
 
         )
         
