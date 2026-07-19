@@ -471,8 +471,12 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 chat_id=send_to_user,
                 text=
                 "✅ سرویس شما فعال شد.\n\n"
-                   "📡 لینک اشتراک:\n"
-                f"{text}"
+                f"📦 پلن: {service[0]}\n"
+                f"💰 مبلغ: {price} تومان\n\n"
+                "🔗 لینک اشتراک:\n"
+                f"{text}\n\n"
+                f"📅 تاریخ انقضا: {expire_date}\n\n"
+                "✅ وضعیت: فعال"
             )
             
             
