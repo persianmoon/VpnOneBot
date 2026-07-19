@@ -7,7 +7,10 @@ DB_NAME = "/data/vpnone.db"
 
 
 async def init_db():
-
+    
+    print("DB PATH:", DB_NAME)
+    print("DB EXISTS:", os.path.exists(DB_NAME))
+    
     async with aiosqlite.connect(DB_NAME) as db:
 
         # ساخت جدول کاربران
