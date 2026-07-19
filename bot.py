@@ -346,8 +346,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             return
 
-
-        # ارسال پیام به کاربر
+        # ارسال متن پیام به کاربر
 
         if send_message_mode == "send_text":
 
@@ -356,16 +355,15 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 text=text
             )
 
-
-                await update.message.reply_text(
+            await update.message.reply_text(
                 "✅ پیام ارسال شد."
             )
-
 
             send_message_mode = None
             send_to_user = None
 
             return
+
 
 
         # ارسال پیام به کاربر
