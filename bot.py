@@ -237,6 +237,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
             for user in users[:20]:
+                if user[0] == ADMIN_ID:
+                    continue
 
                 service = await get_user_active_service(user[0])
 
