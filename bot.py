@@ -383,60 +383,60 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
             # دریافت آیدی برای ثبت اشتراک
 
-    if config_mode == "get_id":
+            if config_mode == "get_id":
 
-        try:
+                try:
 
-            send_to_user = int(text)
+                    send_to_user = int(text)
 
-            config_mode = "get_config"
-
-
-            await update.message.reply_text(
-                "🔗 لینک اشتراک را ارسال کنید:"
-            )
+                    config_mode = "get_config"
 
 
-        except:
-
-            await update.message.reply_text(
-                "❌ آیدی اشتباه است."
-            )
-
-        return
+                    await update.message.reply_text(
+                        "🔗 لینک اشتراک را ارسال کنید:"
+                    )
 
 
+                except:
 
-    # دریافت لینک اشتراک
+                    await update.message.reply_text(
+                        "❌ آیدی اشتباه است."
+                    )
 
-    if config_mode == "get_config":
-
-
-        await save_user_service(
-            send_to_user,
-            text
-        )
+                return
 
 
-        await context.bot.send_message(
-            chat_id=send_to_user,
-            text=
-            "✅ سرویس شما فعال شد.\n\n"
-            "📡 لینک اشتراک:\n"
-            f"{text}"
-        )
+
+            # دریافت لینک اشتراک
+
+            if config_mode == "get_config":
 
 
-        await update.message.reply_text(
-            "✅ سرویس ثبت شد."
-        )
+                await save_user_service(
+                    send_to_user,
+                    text
+                )
 
 
-        config_mode = None
-        send_to_user = None
+                await context.bot.send_message(
+                    chat_id=send_to_user,
+                    text=
+                    "✅ سرویس شما فعال شد.\n\n"
+                    "📡 لینک اشتراک:\n"
+                    f"{text}"
+                )
 
 
-        return
+                await update.message.reply_text(
+                    "✅ سرویس ثبت شد."
+                )
+
+
+                config_mode = None
+                send_to_user = None
+
+
+                return
 
     # ================= بازگشت =================
 
