@@ -247,12 +247,14 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 if service:
                     plan = service[0]
-                    config = service[1]
-                    expire = service[2]
+                    price = service[1]
+                    config = service[2]
+                    expire_date = service[3]
                 else:
-                    plan = "❌ ندارد"
-                    config = "❌ ندارد"
-                    expire = "❌ ندارد"
+                    plan = "نامشخص"
+                    price = "نامشخص"
+                    config = "نامشخص"
+                    expire_date = "نامشخص"
 
 
                 msg += (
