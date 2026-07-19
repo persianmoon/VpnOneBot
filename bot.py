@@ -222,23 +222,23 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id == ADMIN_ID:
 
 
-       if text == "👥 کاربران":
+        if text == "👥 کاربران":
 
-    users = await get_users()
+            users = await get_users()
 
-    if not users:
-        await update.message.reply_text(
-            "❌ هنوز کاربری ثبت نشده."
-        )
-        return
-
-
-    msg = "👥 کاربران:\n\n"
+            if not users:
+                await update.message.reply_text(
+                    "❌ هنوز کاربری ثبت نشده."
+                )
+                return
 
 
-    for user in users[:20]:
+            msg = "👥 کاربران:\n\n"
 
-        service = await get_user_active_service(user[0])
+
+            for user in users[:20]:
+
+                service = await get_user_active_service(user[0])
 
 
         if service:
