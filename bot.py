@@ -249,12 +249,11 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     plan = service[0]
                     price = service[1]
                     config = service[2]
-                    expire_date = service[3]
+                    expire = service[3]
                 else:
-                    plan = "نامشخص"
-                    price = "نامشخص"
-                    config = "نامشخص"
-                    expire_date = "نامشخص"
+                    plan = "❌ ندارد"
+                    config = "❌ ندارد"
+                    expire = "❌ ندارد"
 
 
                 msg += (
