@@ -313,6 +313,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if text == "📨 ارسال پیام":
 
             send_message_mode = "get_id"
+            config_mode = None
 
             await update.message.reply_text(
                 "🆔 آیدی عددی کاربر را ارسال کنید:"
@@ -320,11 +321,59 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             return
 
+    # دریافت آیدی کاربر برای ارسال پیام
 
+        if send_message_mode == "get_id":
+
+            try:
+
+                send_to_user = int(text)
+
+                send_message_mode = "send_text"
+
+
+                await update.message.reply_text(
+                    "✏️ متن پیام را ارسال کنید:"
+                )
+
+
+            except:
+
+                await update.message.reply_text(
+                    "❌ آیدی باید عدد باشد."
+                )
+
+
+            return
+
+
+
+    # ارسال پیام به کاربر
+
+    if send_message_mode == "send_text":
+
+
+        await context.bot.send_message(
+            chat_id=send_to_user,
+            text=text
+        )
+
+
+        await update.message.reply_text(
+            "✅ پیام ارسال شد."
+        )
+
+
+        send_message_mode = None
+        send_to_user = None
+
+
+        return
 
         if text == "📡 ثبت اشتراک":
 
             config_mode = "get_id"
+            send_message_mode = None
 
             await update.message.reply_text(
                 "🆔 آیدی کاربر را ارسال کنید:"
