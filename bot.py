@@ -10,6 +10,7 @@ from database import (
     get_user_orders,
     get_user_active_orders,
     get_user_active_service,
+    delete_user,
 )
 
 from database import save_user_service
@@ -468,6 +469,31 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             config_mode = None
             send_to_user = None
+
+            return
+        
+        if config_mode == "delete_user":
+
+            delete_id = int(text)
+
+            await delete_user(delete_id)
+
+            await update.message.reply_text(
+                "✅ کاربر حذف شد."
+            )
+
+            config_mode = None
+
+            return
+        
+        
+        if text == "🗑 حذف کاربر":
+
+            config_mode = "delete_user"
+
+            await update.message.reply_text(
+                "🆔 آیدی کاربری که می‌خواهید حذف کنید را ارسال کنید:"
+            )
 
             return
 

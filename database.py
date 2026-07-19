@@ -335,3 +335,19 @@ async def get_user_active_service(user_id):
         )
 
         return await cursor.fetchone()
+    
+async def delete_user(user_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute(
+            "DELETE FROM users WHERE id = ?",
+            (user_id,)
+        )
+
+        await db.execute(
+            "DELETE FROM orders WHERE user_id = ?",
+            (user_id,)
+        )
+
+        await db.commit()
