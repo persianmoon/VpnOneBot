@@ -194,7 +194,6 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global send_to_user
     global send_message_mode
     global config_mode
-    global send_to_user
 
     user_id = update.message.from_user.id
     text = update.message.text
