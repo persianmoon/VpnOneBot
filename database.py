@@ -1,3 +1,4 @@
+import os
 import aiosqlite
 from datetime import datetime, timedelta
 from persiantools.jdatetime import JalaliDate
@@ -7,22 +8,42 @@ DB_NAME = "/data/vpnone.db"
 
 
 async def init_db():
-    
-    print("DB PATH:", DB_NAME)
-    print("DB EXISTS:", os.path.exists(DB_NAME))
-    
+
     async with aiosqlite.connect(DB_NAME) as db:
 
-        # ساخت جدول کاربران
         await db.execute("""
         CREATE TABLE IF NOT EXISTS users (
-
             id INTEGER PRIMARY KEY,
             username TEXT,
             first_name TEXT
-
         )
         """)
+
+        await db.execute("""
+        CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            plan TEXT,
+            price TEXT,
+            status TEXT
+        )
+        """)
+
+        try:
+            await db.execute(
+                "ALTER TABLE orders ADD COLUMN config TEXT"
+            )
+        except:
+            pass
+
+        try:
+            await db.execute(
+                "ALTER TABLE orders ADD COLUMN expire_date TEXT"
+            )
+        except:
+            pass
+
+        await db.commit()
 
 
         # ساخت جدول سفارشات
