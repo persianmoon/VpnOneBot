@@ -462,8 +462,12 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             service = await get_user_active_service(send_to_user)
 
             if service:
-                expire_date = service[1]
+                plan = service[0]
+                price = service[1]
+                expire_date = service[3]
             else:
+                plan = "نامشخص"
+                price = "نامشخص"
                 expire_date = "نامشخص"
                 
             get_user_info = await get_user(send_to_user)
