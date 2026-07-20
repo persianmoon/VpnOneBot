@@ -168,6 +168,16 @@ def plan_menu():
         ],
         resize_keyboard=True
     )
+
+def orders_menu():
+
+    return ReplyKeyboardMarkup(
+        [
+            ["🗑 حذف سفارش", "🔥 حذف همه سفارش‌ها"],
+            ["⬅️ برگشت سفارش‌ها"]
+        ],
+        resize_keyboard=True
+    )
 # ================= شروع =================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -293,10 +303,33 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if not orders_list:
 
                 await update.message.reply_text(
-                    "❌ سفارشی وجود ندارد."
+                    "❌ سفارشی وجود ندارد.",
+                    reply_markup=orders_menu()
                 )
 
                 return
+
+
+            msg = "📦 سفارش‌ها:\n\n"
+
+            for order in orders_list[:20]:
+
+                msg += (
+                    f"🆔 سفارش: {order[0]}\n"
+                    f"👤 کاربر: {order[1]}\n"
+                    f"📦 پلن: {order[2]}\n"
+                    f"💰 مبلغ: {order[3]}\n"
+                    f"📌 وضعیت: {order[4]}\n\n"
+                    "━━━━━━━━━━━━\n\n"
+                )
+
+
+            await update.message.reply_text(
+                msg,
+                reply_markup=orders_menu()
+            )
+
+            return
 
 
             msg = "📦 سفارش‌ها:\n\n"
