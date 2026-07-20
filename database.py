@@ -377,3 +377,14 @@ async def get_user(user_id):
         )
 
         return await cursor.fetchone()
+    
+async def delete_order(order_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute(
+            "DELETE FROM orders WHERE id = ?",
+            (order_id,)
+        )
+
+        await db.commit()

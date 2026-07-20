@@ -12,6 +12,7 @@ from database import (
     get_user_active_orders,
     get_user_active_service,
     delete_user,
+    delete_order,
 )
 
 from database import save_user_service
