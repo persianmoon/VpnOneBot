@@ -298,88 +298,89 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # ================= حذف سفارش =================
 
-    if text == "🗑 حذف سفارش":
+        if text == "🗑 حذف سفارش":
 
-        config_mode = "delete_order"
-
-        await update.message.reply_text(
-            "🆔 آیدی سفارش را ارسال کنید:"
-        )
-
-        return
-
-
-    if config_mode == "delete_order":
-
-        try:
-            order_id = int(text)
-    
-            await delete_order(order_id)
+            config_mode = "delete_order"
 
             await update.message.reply_text(
-                "✅ سفارش حذف شد."
-            )
-
-        except:
-
-            await update.message.reply_text(
-                "❌ آیدی سفارش اشتباه است."
-            )
-
-        config_mode = None
-
-        return
-
-
-
-    if text == "🔥 حذف همه سفارش‌ها":
-
-        await delete_all_orders()
-
-        await update.message.reply_text(
-            "✅ تمام سفارش‌ها حذف شدند."
-        )
-
-        return
-
-
-
-    # ================= نمایش سفارش‌ها =================
-
-    if text == "📦 سفارش‌ها":
-
-        orders_list = await get_orders()
-
-        if not orders_list:
-
-            await update.message.reply_text(
-                "❌ سفارشی وجود ندارد.",
-                reply_markup=orders_menu()
+                "🆔 آیدی سفارش را ارسال کنید:"
             )
 
             return
 
 
-         msg = "📦 سفارش‌ها:\n\n"
+        if config_mode == "delete_order":
 
-         for order in orders_list[:20]:
+            try:
+                order_id = int(text)
+    
+                await delete_order(order_id)
 
-             msg += (
-                f"🆔 سفارش: {order[0]}\n"
-                f"👤 کاربر: {order[1]}\n"
-                f"📦 پلن: {order[2]}\n"
-                f"💰 مبلغ: {order[3]}\n"
-                f"📌 وضعیت: {order[4]}\n\n"
-                "━━━━━━━━━━━━\n\n"
+                await update.message.reply_text(
+                    "✅ سفارش حذف شد."
+                )
+
+            except:
+
+                await update.message.reply_text(
+                    "❌ آیدی سفارش اشتباه است."
+                )
+
+            config_mode = None
+
+            return
+
+
+
+        if text == "🔥 حذف همه سفارش‌ها":
+
+            await delete_all_orders()
+
+            await update.message.reply_text(
+               "✅ تمام سفارش‌ها حذف شدند."
             )
 
+            return
 
-        await update.message.reply_text(
-            msg,
-            reply_markup=orders_menu()
-        )
 
-        return
+
+        # ================= نمایش سفارش‌ها =================
+
+        if text == "📦 سفارش‌ها":
+
+            orders_list = await get_orders()
+
+            if not orders_list:
+
+                await update.message.reply_text(
+                    "❌ سفارشی وجود ندارد.",
+                    reply_markup=orders_menu()
+                )
+
+                return
+
+
+            msg = "📦 سفارش‌ها:\n\n"
+
+
+            for order in orders_list[:20]:
+
+                msg += (
+                    f"🆔 سفارش: {order[0]}\n"
+                    f"👤 کاربر: {order[1]}\n"
+                    f"📦 پلن: {order[2]}\n"
+                    f"💰 مبلغ: {order[3]}\n"
+                    f"📌 وضعیت: {order[4]}\n\n"
+                    "━━━━━━━━━━━━\n\n"
+                )
+
+
+            await update.message.reply_text(
+                msg,
+                reply_markup=orders_menu()
+            )
+
+            return
 
 
         if text == "⏳ سفارش‌های در انتظار":
