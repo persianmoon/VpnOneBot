@@ -333,26 +333,32 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 if user[0] == ADMIN_ID:
                     continue
 
-                service = await get_user_active_service(user[0])
+                services = await get_user_active_orders(user[0])
 
-                if service:
-                    plan = service[0]
-                    price = service[1]
-                    config = service[2]
-                    expire = service[3]
+                if services:
+
+                    service_text = ""
+
+                    for s in services:
+
+                        service_text += (
+                            f"📦 پلن: {s[0]}\n"
+                            f"💰 مبلغ: {s[1]}\n"
+                            f"📡 لینک اشتراک:\n{s[2]}\n"
+                            f"📅 انقضا: {s[3]}\n\n"
+                            "━━━━━━━━━━━━\n"
+                    )
+
                 else:
-                    plan = "❌ ندارد"
-                    config = "❌ ندارد"
-                    expire = "❌ ندارد"
+
+                    service_text = "❌ ندارد"
 
 
                 msg += (
                     f"🆔 {user[0]}\n"
                     f"👤 {user[1] or 'بدون یوزرنیم'}\n"
-                    f"👨 {user[2]}\n"
-                    f"📦 اشتراک: {plan}\n"
-                    f"📡 لینک اشتراک:\n{config}\n"
-                    f"📅 انقضا: {expire}\n\n"
+                    f"👨 {user[2]}\n\n"
+                    f"📦 اشتراک‌ها:\n{service_text}\n"
                     "━━━━━━━━━━━━\n\n"
                 )
 
@@ -842,6 +848,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"📅 تاریخ انقضا: {expire_date if expire_date else 'ثبت نشده'}\n"
                 f"⏳ روزهای باقی‌مانده: {days_left} روز\n\n"
                 f"✅ وضعیت: فعال\n\n"
+                "━━━━━━━━━━━━━━\n\n"
             )
 
 
