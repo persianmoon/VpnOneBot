@@ -18,6 +18,9 @@ from database import save_user_service
 
 import os
 
+from datetime import datetime, timedelta
+from persiantools.jdatetime import JalaliDate
+
 from telegram import (
     Update,
     ReplyKeyboardMarkup,
@@ -506,9 +509,12 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 price = service[1]
                 expire_date = service[3]
             else:
-                plan = "نامشخص"
-                price = "نامشخص"
-                expire_date = "نامشخص"
+                plan = selected_plan
+                price = selected_price
+
+                expire_date = JalaliDate(
+                    datetime.now() + timedelta(days=30)
+                ).strftime("%Y/%m/%d")
                 
             get_user_info = await get_user(send_to_user)
 
