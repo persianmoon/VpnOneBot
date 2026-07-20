@@ -410,6 +410,26 @@ async def delete_user(user_id):
 
         await db.commit()
         
+        
+async def delete_users(user_ids):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        for user_id in user_ids:
+
+            await db.execute(
+                "DELETE FROM users WHERE id = ?",
+                (user_id,)
+            )
+
+            await db.execute(
+                "DELETE FROM orders WHERE user_id = ?",
+                (user_id,)
+            )
+
+        await db.commit()
+
+
 async def get_user(user_id):
 
     async with aiosqlite.connect(DB_NAME) as db:

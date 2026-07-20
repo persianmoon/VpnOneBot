@@ -652,19 +652,28 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             try:
 
-                delete_id = int(text)
+                lines = text.splitlines()
 
-                await delete_user(delete_id)
+                user_ids = []
+
+                for line in lines:
+                    user_ids.append(int(line.strip()))
+
+
+                await delete_users(user_ids)
+
 
                 await update.message.reply_text(
-                    "✅ کاربر حذف شد."
+                    f"✅ تعداد {len(user_ids)} کاربر حذف شد."
                 )
 
-            except:
+
+            except Exception as e:
 
                 await update.message.reply_text(
-                     "❌ آیدی نامعتبر است."
+                    f"❌ خطا:\n{e}"
                 )
+
 
             config_mode = None
 
