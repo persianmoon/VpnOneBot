@@ -873,6 +873,9 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
 
 
+
+    user_info = await get_user(user_id)
+    
     await context.bot.send_photo(
 
         chat_id=ADMIN_ID,
@@ -882,7 +885,9 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         caption=
 
         f"📥 رسید جدید\n\n"
-        f"👤 User ID: {user_id}\n"
+        f"🆔 User ID: {user_id}\n"
+        f"👤 یوزرنیم: @{user_info[0] or 'ندارد'}\n"
+        f"👨 نام: {user_info[1] or 'ندارد'}\n\n"
         f"📦 {orders[user_id]['plan']}\n"
         f"💰 {orders[user_id]['price']}",
 
