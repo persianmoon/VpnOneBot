@@ -97,6 +97,9 @@ config_mode = None
 selected_plan = None
 selected_price = None
 
+users_page = 0
+orders_page = 0
+
 # ================= منوها =================
 
 def main_menu():
@@ -232,6 +235,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global send_message_mode
     global selected_plan
     global selected_price
+    global users_page
+    global orders_page
 
     user_id = update.message.from_user.id
     text = update.message.text
@@ -250,7 +255,46 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if user_id == ADMIN_ID:
 
+        
+        if text == "بعدی ➡️":
 
+            users_page += 1
+
+            users = await get_users()
+
+            page_size = 10
+
+            if users_page * page_size >= len(users):
+
+                users_page -= 1
+
+                await update.message.reply_text(
+                    "❌ صفحه دیگری وجود ندارد."
+                )
+
+                return
+            
+        if text == "⬅️ قبلی":
+
+            if users_page > 0:
+
+                users_page -= 1
+
+            else:
+
+                await update.message.reply_text(
+                    "❌ این اولین صفحه است."
+                )
+
+                return
+
+
+    text = "👥 کاربران"
+        
+
+    text = "👥 کاربران"
+    
+        
         if text == "👥 کاربران":
 
             users = await get_users()
@@ -260,12 +304,20 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     "❌ هنوز کاربری ثبت نشده."
                 )
                 return
+            
+            page_size = 10
+
+            start = users_page * page_size
+
+            end = start + page_size
+
+            page_users = users[start:end]
 
 
-            msg = "👥 کاربران:\n\n"
+            msg = f"👥 کاربران (صفحه {users_page + 1}):\n\n"
 
 
-            for user in users[:20]:
+            for user in page_users:
                 if user[0] == ADMIN_ID:
                     continue
 
@@ -293,7 +345,10 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
 
 
-            await update.message.reply_text(msg)
+            await update.message.reply_text(
+                msg,
+                reply_markup=users_pagination_menu()
+            )
 
             return
 
@@ -679,7 +734,26 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             config_mode = None
 
             return
+        
+def users_pagination_menu():
 
+    return ReplyKeyboardMarkup(
+        [
+            ["⬅️ قبلی", "بعدی ➡️"],
+            ["⬅️ برگشت"]
+        ],
+        resize_keyboard=True
+    )
+
+def orders_pagination_menu():
+
+    return ReplyKeyboardMarkup(
+        [
+            ["⬅️ قبلی", "بعدی ➡️"],
+            ["⬅️ برگشت سفارش‌ها"]
+        ],
+        resize_keyboard=True
+    )
     # ================= بازگشت =================
 
     if text == "⬅️ بازگشت":
