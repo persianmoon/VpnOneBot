@@ -733,7 +733,19 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             config_mode = None
 
             return
-        
+# ================= بازگشت =================
+
+    if text == "⬅️ بازگشت":
+
+        await update.message.reply_text(
+            "🏠 منوی اصلی:",
+            reply_markup=main_menu()
+        )
+
+        return
+    
+    
+
 def users_pagination_menu():
 
     return ReplyKeyboardMarkup(
@@ -753,16 +765,7 @@ def orders_pagination_menu():
         ],
         resize_keyboard=True
     )
-    # ================= بازگشت =================
-
-    if text == "⬅️ بازگشت":
-
-        await update.message.reply_text(
-            "🏠 منوی اصلی:",
-            reply_markup=main_menu()
-        )
-
-        return
+    
 
 
 
