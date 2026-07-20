@@ -388,3 +388,13 @@ async def delete_order(order_id):
         )
 
         await db.commit()
+        
+async def delete_all_orders():
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute(
+            "DELETE FROM orders"
+        )
+
+        await db.commit()

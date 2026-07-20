@@ -13,6 +13,7 @@ from database import (
     get_user_active_service,
     delete_user,
     delete_order,
+    delete_all_orders,
 )
 
 from database import save_user_service
@@ -337,11 +338,19 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if text == "🔥 حذف همه سفارش‌ها":
 
-            await delete_all_orders()
+            try:
 
-            await update.message.reply_text(
-               "✅ تمام سفارش‌ها حذف شدند."
-            )
+                await delete_all_orders()
+
+                await update.message.reply_text(
+                    "✅ تمام سفارش‌ها حذف شدند."
+                )
+
+            except Exception as e:
+
+                await update.message.reply_text(
+                    f"❌ خطا:\n{e}"
+                )
 
             return
 
