@@ -386,7 +386,11 @@ async def delete_order(order_id):
 
         # حذف سفارش
         await db.execute(
-            "DELETE FROM orders WHERE id = ?",
+            """
+            DELETE FROM orders
+            WHERE id = ?
+            AND status != 'approved'
+            """,
             (order_id,)
         )
 
@@ -431,7 +435,10 @@ async def delete_all_orders():
     async with aiosqlite.connect(DB_NAME) as db:
 
         await db.execute(
-            "DELETE FROM orders"
+            """
+            DELETE FROM orders
+            WHERE status != 'approved'
+            """
         )
 
         await db.execute(
