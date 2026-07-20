@@ -310,6 +310,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
         if config_mode == "delete_order":
+            
+            print("DELETE ORDER MODE:", text)
 
             try:
                 order_id = int(text)
