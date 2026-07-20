@@ -180,7 +180,7 @@ def orders_menu():
     return ReplyKeyboardMarkup(
         [
             ["🗑 حذف سفارش", "🔥 حذف همه سفارش‌ها"],
-            ["⬅️ برگشت سفارش‌ها"]
+            ["⬅️ برگشت به مدیریت"]
         ],
         resize_keyboard=True
     )
@@ -255,6 +255,18 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if user_id == ADMIN_ID:
 
+
+        if text == "⬅️ برگشت به مدیریت":
+
+            await update.message.reply_text(
+                "⚙️ پنل مدیریت",
+                reply_markup=admin_menu()
+            )
+
+            users_page = 0
+            orders_page = 0
+
+            return
         
         if text == "بعدی ➡️":
 
@@ -387,16 +399,6 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
 
             config_mode = None
-
-            return
-
-
-        if text == "⬅️ برگشت سفارش‌ها":
-
-            await update.message.reply_text(
-                "⚙️ پنل مدیریت",
-                reply_markup=admin_menu()
-            )
 
             return
 
@@ -905,7 +907,7 @@ def users_pagination_menu():
     return ReplyKeyboardMarkup(
         [
             ["⬅️ قبلی", "بعدی ➡️"],
-            ["⬅️ بازگشت"]
+            ["⬅️ برگشت به مدیریت"]
         ],
         resize_keyboard=True
     )
@@ -915,7 +917,7 @@ def orders_pagination_menu():
     return ReplyKeyboardMarkup(
         [
             ["⬅️ قبلی", "بعدی ➡️"],
-            ["⬅️ برگشت سفارش‌ها"]
+            ["⬅️ برگشت به مدیریت"]
         ],
         resize_keyboard=True
     )
