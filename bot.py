@@ -296,18 +296,68 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
-        if text == "📦 سفارش‌ها":
+        # ================= حذف سفارش =================
 
-            orders_list = await get_orders()
+    if text == "🗑 حذف سفارش":
 
-            if not orders_list:
+        config_mode = "delete_order"
 
-                await update.message.reply_text(
-                    "❌ سفارشی وجود ندارد.",
-                    reply_markup=orders_menu()
-                )
+        await update.message.reply_text(
+            "🆔 آیدی سفارش را ارسال کنید:"
+        )
 
-                return
+        return
+
+
+    if config_mode == "delete_order":
+
+        try:
+            order_id = int(text)
+    
+            await delete_order(order_id)
+
+            await update.message.reply_text(
+                "✅ سفارش حذف شد."
+            )
+
+        except:
+
+            await update.message.reply_text(
+                "❌ آیدی سفارش اشتباه است."
+            )
+
+        config_mode = None
+
+        return
+
+
+
+    if text == "🔥 حذف همه سفارش‌ها":
+
+        await delete_all_orders()
+
+        await update.message.reply_text(
+            "✅ تمام سفارش‌ها حذف شدند."
+        )
+
+        return
+
+
+
+    # ================= نمایش سفارش‌ها =================
+
+    if text == "📦 سفارش‌ها":
+
+        orders_list = await get_orders()
+
+        if not orders_list:
+
+            await update.message.reply_text(
+                "❌ سفارشی وجود ندارد.",
+                reply_markup=orders_menu()
+            )
+
+            return
 
 
             msg = "📦 سفارش‌ها:\n\n"
