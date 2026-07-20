@@ -287,47 +287,94 @@ async def save_user_service(
 
     async with aiosqlite.connect(DB_NAME) as db:
 
-        await db.execute(
+        # اول چک می‌کنیم سفارش تایید شده دارد یا نه
+        cursor = await db.execute(
             """
-            UPDATE orders
-            SET
-                plan = ?,
-                price = ?,
-                config = ?,
-                expire_date = ?,
-                status = 'approved'
-
-            WHERE id = (
-                SELECT id
-                FROM orders
-                WHERE user_id = ?
-                ORDER BY id DESC
-                LIMIT 1
-            )
+            SELECT id
+            FROM orders
+            WHERE user_id = ?
+            ORDER BY id DESC
+            LIMIT 1
             """,
-            (
-                plan,
-                price,
-                config,
-                expire_date,
-                user_id
-            )
+            (user_id,)
         )
+
+        order = await cursor.fetchone()
+
+
+        if order:
+
+            await db.execute(
+                """
+                UPDATE orders
+                SET
+                    plan = ?,
+                    price = ?,
+                    config = ?,
+                    expire_date = ?,
+                    status = 'approved'
+
+                WHERE id = ?
+                """,
+                (
+                    plan,
+                    price,
+                    config,
+                    expire_date,
+                    order[0]
+                )
+            )
+
+
+        else:
+
+            await db.execute(
+                """
+                INSERT INTO orders
+                (
+                    user_id,
+                    plan,
+                    price,
+                    config,
+                    expire_date,
+                    status
+                )
+
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    user_id,
+                    plan,
+                    price,
+                    config,
+                    expire_date,
+                    "approved"
+                )
+            )
+
 
         await db.execute(
             """
             INSERT OR IGNORE INTO users
-            (id, username, first_name)
+            (
+                id,
+                username,
+                first_name
+            )
 
             VALUES (?, ?, ?)
             """,
             (
                 user_id,
-                None,
-                None
+                username,
+                first_name
             )
         )
+
+
         await db.commit()
+
+
         
 async def get_user_active_service(user_id):
 
