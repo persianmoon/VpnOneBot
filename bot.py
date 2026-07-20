@@ -744,29 +744,6 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         return
-    
-    
-
-def users_pagination_menu():
-
-    return ReplyKeyboardMarkup(
-        [
-            ["⬅️ قبلی", "بعدی ➡️"],
-            ["⬅️ بازگشت"]
-        ],
-        resize_keyboard=True
-    )
-
-def orders_pagination_menu():
-
-    return ReplyKeyboardMarkup(
-        [
-            ["⬅️ قبلی", "بعدی ➡️"],
-            ["⬅️ برگشت سفارش‌ها"]
-        ],
-        resize_keyboard=True
-    )
-    
 
 
 
@@ -923,7 +900,25 @@ def orders_pagination_menu():
         return
 
 
+def users_pagination_menu():
 
+    return ReplyKeyboardMarkup(
+        [
+            ["⬅️ قبلی", "بعدی ➡️"],
+            ["⬅️ بازگشت"]
+        ],
+        resize_keyboard=True
+    )
+
+def orders_pagination_menu():
+
+    return ReplyKeyboardMarkup(
+        [
+            ["⬅️ قبلی", "بعدی ➡️"],
+            ["⬅️ برگشت سفارش‌ها"]
+        ],
+        resize_keyboard=True
+    )
 # ================= دریافت رسید =================
 
 async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
