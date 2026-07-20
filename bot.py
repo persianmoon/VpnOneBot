@@ -274,6 +274,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 return
             
+            
+            
         if text == "⬅️ قبلی":
 
             if users_page > 0:
@@ -287,12 +289,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
 
                 return
-
-
-    text = "👥 کاربران"
         
 
-    text = "👥 کاربران"
+            text = "👥 کاربران"
     
         
         if text == "👥 کاربران":
