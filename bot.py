@@ -335,6 +335,15 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
 
+        if text == "⬅️ برگشت سفارش‌ها":
+
+            await update.message.reply_text(
+                "⚙️ پنل مدیریت",
+                reply_markup=admin_menu()
+            )
+
+            return
+
 
         if text == "🔥 حذف همه سفارش‌ها":
 
