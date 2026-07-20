@@ -152,6 +152,20 @@ def admin_menu():
         ],
         resize_keyboard=True
     )
+
+def plan_menu():
+
+    return ReplyKeyboardMarkup(
+        [
+            ["30 گیگ - 3 کاربره - 200/000 تومان"],
+            ["50 گیگ - 3 کاربره - 300/000 تومان"],
+            ["70 گیگ - 3 کاربره - 400/000 تومان"],
+            ["100 گیگ - 3 کاربره - 500/000 تومان"],
+            ["نامحدود - 3 کاربره - 1/000/000 تومان"],
+            ["⬅️ بازگشت"]
+        ],
+        resize_keyboard=True
+    )
 # ================= شروع =================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
