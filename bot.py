@@ -12,6 +12,7 @@ from database import (
     get_user_active_orders,
     get_user_active_service,
     delete_user,
+    delete_users,
     delete_order,
     delete_all_orders,
 )
