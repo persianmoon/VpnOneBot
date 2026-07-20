@@ -378,16 +378,53 @@ async def get_user(user_id):
 
         return await cursor.fetchone()
     
+    
+    
 async def delete_order(order_id):
 
     async with aiosqlite.connect(DB_NAME) as db:
 
+        # حذف سفارش
         await db.execute(
             "DELETE FROM orders WHERE id = ?",
             (order_id,)
         )
 
+        # گرفتن سفارش‌های باقی مانده
+        cursor = await db.execute(
+            "SELECT id FROM orders ORDER BY id"
+        )
+
+        orders = await cursor.fetchall()
+
+
+        # مرتب کردن شماره‌ها
+        new_id = 1
+
+        for order in orders:
+
+            await db.execute(
+                "UPDATE orders SET id = ? WHERE id = ?",
+                (new_id, order[0])
+            )
+
+            new_id += 1
+
+
+        # تنظیم شماره سفارش بعدی
+        await db.execute(
+            "DELETE FROM sqlite_sequence WHERE name='orders'"
+        )
+
+        await db.execute(
+            "INSERT INTO sqlite_sequence(name, seq) VALUES('orders', ?)",
+            (new_id - 1,)
+        )
+
+
         await db.commit()
+        
+        
         
 async def delete_all_orders():
 
@@ -395,6 +432,10 @@ async def delete_all_orders():
 
         await db.execute(
             "DELETE FROM orders"
+        )
+
+        await db.execute(
+            "DELETE FROM sqlite_sequence WHERE name='orders'"
         )
 
         await db.commit()

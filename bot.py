@@ -386,9 +386,13 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             for order in orders_list[:20]:
 
+                user_info = await get_user(order[1])
+
                 msg += (
                     f"🆔 سفارش: {order[0]}\n"
-                    f"👤 کاربر: {order[1]}\n"
+                    f"👤 آیدی کاربر: {order[1]}\n"
+                    f"📛 یوزرنیم: @{user_info[0] or 'ندارد'}\n"
+                    f"👨 نام: {user_info[1] or 'ندارد'}\n"
                     f"📦 پلن: {order[2]}\n"
                     f"💰 مبلغ: {order[3]}\n"
                     f"📌 وضعیت: {order[4]}\n\n"
