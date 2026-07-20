@@ -85,10 +85,11 @@ PLANS = {
 
 
 orders = {}
-
 send_to_user = None
 send_message_mode = None
 config_mode = None
+selected_plan = None
+selected_price = None
 
 # ================= منوها =================
 
@@ -197,9 +198,11 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+    global config_mode
     global send_to_user
     global send_message_mode
-    global config_mode
+    global selected_plan
+    global selected_price
 
     user_id = update.message.from_user.id
     text = update.message.text
@@ -423,11 +426,11 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 send_to_user = int(text)
 
-                config_mode = "get_config"
-
+                config_mode = "select_plan"
 
                 await update.message.reply_text(
-                    "🔗 لینک اشتراک را ارسال کنید:"
+                    "📦 پلن را انتخاب کنید:",
+                    reply_markup=plan_menu()
                 )
 
 
@@ -439,6 +442,27 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             return
 
+        if config_mode == "select_plan":
+
+            if text not in PLANS:
+
+                await update.message.reply_text(
+                    "❌ لطفاً یکی از پلن‌ها را انتخاب کنید.",
+                    reply_markup=plan_menu()
+                )
+
+                return
+
+        selected_plan = PLANS[text]["name"]
+        selected_price = PLANS[text]["price"]
+
+        config_mode = "get_config"
+
+        await update.message.reply_text(
+            "🔗 لینک اشتراک را ارسال کنید:"
+        )
+    
+        return
 
 
         # دریافت لینک اشتراک
