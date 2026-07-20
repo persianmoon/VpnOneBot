@@ -411,6 +411,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             config_mode = "get_id"
             send_message_mode = None
 
+            print("CONFIG MODE SET:", config_mode)
+
             await update.message.reply_text(
                 "🆔 آیدی کاربر را ارسال کنید:"
             )
@@ -421,6 +423,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # دریافت آیدی برای ثبت اشتراک
 
         if config_mode == "get_id":
+            
+            print("GET ID RUNNING:", text)
+
 
             try:
 
