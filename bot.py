@@ -434,10 +434,12 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
 
 
-            except:
+            except Exception as e:
+
+                print(e)
 
                 await update.message.reply_text(
-                    "❌ آیدی اشتباه است."
+                   f"❌ خطا:\n{e}"
                 )
 
             return
