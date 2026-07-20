@@ -274,6 +274,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 return
             
+            text = "👥 کاربران"
             
             
         if text == "⬅️ قبلی":
@@ -751,7 +752,7 @@ def users_pagination_menu():
     return ReplyKeyboardMarkup(
         [
             ["⬅️ قبلی", "بعدی ➡️"],
-            ["⬅️ برگشت"]
+            ["⬅️ بازگشت"]
         ],
         resize_keyboard=True
     )
