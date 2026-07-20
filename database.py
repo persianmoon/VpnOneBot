@@ -271,7 +271,14 @@ async def get_user_active_orders(user_id):
         return result
 
 
-async def save_user_service(user_id, config, username, first_name):
+async def save_user_service(
+    user_id,
+    config,
+    username,
+    first_name,
+    plan,
+    price
+):
 
     expire_date = JalaliDate(
         datetime.now() + timedelta(days=30)
@@ -284,6 +291,8 @@ async def save_user_service(user_id, config, username, first_name):
             """
             UPDATE orders
             SET
+                plan = ?,
+                price = ?,
                 config = ?,
                 expire_date = ?,
                 status = 'approved'
@@ -297,6 +306,8 @@ async def save_user_service(user_id, config, username, first_name):
             )
             """,
             (
+                plan,
+                price,
                 config,
                 expire_date,
                 user_id

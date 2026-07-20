@@ -494,7 +494,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 send_to_user,
                 text,
                 username,
-                first_name
+                first_name,
+                selected_plan,
+                selected_price
             )
             
             service = await get_user_active_service(send_to_user)
@@ -515,8 +517,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 chat_id=send_to_user,
                 text=
                 "✅ سرویس شما فعال شد.\n\n"
-                f"📦 پلن: {service[0]}\n"
-                f"💰 مبلغ: {price} تومان\n\n"
+                f"📦 پلن: {selected_plan}\n"
+                f"💰 مبلغ: {selected_price}\n\n"
                 "🔗 لینک اشتراک:\n"
                 f"{text}\n\n"
                 f"📅 تاریخ انقضا: {expire_date}\n\n"
