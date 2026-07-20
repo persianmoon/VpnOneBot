@@ -815,13 +815,32 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         for service in services:
 
+            expire_date = service[3]
+
+            if expire_date:
+                today = JalaliDate.today()
+
+                expire = JalaliDate.strptime(
+                    expire_date,
+                    "%Y/%m/%d"
+                )
+
+                days_left = (expire - today).days
+
+                if days_left < 0:
+                    days_left = 0
+
+            else:
+                days_left = "نامشخص"
+
+
             msg += (
                 f"📦 پلن: {service[0]}\n"
                 f"💰 مبلغ: {service[1]}\n\n"
                 f"🔗 لینک اشتراک:\n"
                 f"{service[2] if service[2] else 'ثبت نشده'}\n\n"
-                f"📅 تاریخ انقضا: "
-                f"{service[3] if service[3] else 'ثبت نشده'}\n\n"
+                f"📅 تاریخ انقضا: {expire_date if expire_date else 'ثبت نشده'}\n"
+                f"⏳ روزهای باقی‌مانده: {days_left} روز\n\n"
                 f"✅ وضعیت: فعال\n\n"
             )
 
