@@ -455,16 +455,16 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 return
 
-        selected_plan = PLANS[text]["name"]
-        selected_price = PLANS[text]["price"]
+            selected_plan = PLANS[text]["name"]
+            selected_price = PLANS[text]["price"]
 
-        config_mode = "get_config"
+            config_mode = "get_config"
 
-        await update.message.reply_text(
-            "🔗 لینک اشتراک را ارسال کنید:"
-        )
+            await update.message.reply_text(
+                "🔗 لینک اشتراک را ارسال کنید:"
+            )
     
-        return
+            return
 
 
         # دریافت لینک اشتراک
