@@ -96,6 +96,7 @@ send_message_mode = None
 config_mode = None
 selected_plan = None
 selected_price = None
+broadcast_mode = None
 
 users_page = 0
 orders_page = 0
@@ -156,8 +157,8 @@ def admin_menu():
         [
             ["👥 کاربران","📦 سفارش‌ها"],
             ["⏳ سفارش‌های در انتظار","📊 آمار فروش"],
-            ["📨 ارسال پیام","📡 ثبت اشتراک"],
-            ["🗑 حذف کاربر"],
+            ["📨 ارسال پیام","📢 ارسال همگانی"],
+            ["🗑 حذف کاربر","📡 ثبت اشتراک"],
         ],
         resize_keyboard=True
     )
@@ -237,6 +238,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global selected_price
     global users_page
     global orders_page
+    global broadcast_mode
 
     user_id = update.message.from_user.id
     text = update.message.text
@@ -527,6 +529,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
             return
+        
+    
 
     # دریافت آیدی کاربر برای ارسال پیام
 
@@ -572,8 +576,57 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
 
+        if text == "📢 ارسال همگانی":
 
-        # ارسال پیام به کاربر
+            broadcast_mode = "send"
+
+            await update.message.reply_text(
+                "📢 متن پیام همگانی را ارسال کنید:"
+            )
+
+            return
+        
+        
+        
+        if broadcast_mode == "send":
+
+            users = await get_users()
+
+            success = 0
+            failed = 0
+
+            for user in users:
+
+                try:
+
+                    if user[0] == ADMIN_ID:
+                        continue
+
+                    await context.bot.send_message(
+                        chat_id=user[0],
+                        text=text
+                    )
+
+                    success += 1
+
+                except:
+
+                    failed += 1
+
+
+            await update.message.reply_text(
+                f"✅ ارسال همگانی انجام شد.\n\n"
+                f"📨 موفق: {success}\n"
+                f"❌ ناموفق: {failed}",
+                reply_markup=admin_menu()
+            )
+
+
+            broadcast_mode = None
+
+            return
+        
+        
 
         if text == "📡 ثبت اشتراک":
 
