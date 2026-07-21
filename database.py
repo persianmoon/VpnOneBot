@@ -141,7 +141,7 @@ async def add_order(user_id, plan, price):
                 config,
                 buy_date,
                 expire_date,
-                "pending"
+                status
             )
 
             VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -393,7 +393,7 @@ async def save_user_service(
                     config,
                     buy_date,
                     expire_date,
-                    status
+                    "approved"
                 )
 
                 VALUES (?, ?, ?, ?, ?, ?, ?)
