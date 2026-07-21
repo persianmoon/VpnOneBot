@@ -116,7 +116,7 @@ def main_menu():
     return ReplyKeyboardMarkup(
         [
             ["💳 خرید VPN","📡 سرویس من"],
-            ["🔄 تمدید اشتراک","📨 ارسال پیام به ادمین"],
+            ["🔄 تمدید اشتراک","📨 ارسال پیام به پشتیبانی"],
             ["📚 آموزش اتصال","📞 پشتیبانی"]
         ],
         resize_keyboard=True
@@ -1029,7 +1029,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
     
-    if text == "📨 ارسال پیام به ادمین":
+    if text == "📨 ارسال پیام به پشتیبانی":
 
         send_message_mode = "support"
 
