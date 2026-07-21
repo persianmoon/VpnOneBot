@@ -1033,6 +1033,10 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # ================= تمدید اشتراک =================
 
     if renew_mode == "select_plan":
+        
+        
+        print("RENEW SELECT PLAN RUNNING:", text)
+        print("RENEW MODE:", renew_mode)
 
         if text not in PLANS:
             await update.message.reply_text(
