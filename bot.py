@@ -912,6 +912,19 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
     
+    if text == "📨 ارسال پیام به ادمین":
+
+        global send_message_mode
+
+        send_message_mode = "support"
+
+        await update.message.reply_text(
+            "✏️ پیام خود را ارسال کنید:",
+            reply_markup=back_menu()
+        )
+
+        return
+
 
     # ================= خرید VPN =================
 
@@ -1005,8 +1018,8 @@ def service_menu():
 
     return ReplyKeyboardMarkup(
         [
-            ["🔄 تمدید اشتراک"],
-            ["📨 ارسال پیام به ادمین"],
+            ["🔄 تمدید اشتراک","📨 ارسال پیام به ادمین"],
+            ,
             ["⬅️ بازگشت"]
         ],
         resize_keyboard=True
