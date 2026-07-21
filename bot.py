@@ -1246,6 +1246,8 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     ]
 
+
+    user_info = await get_user(user_id)
     
     await context.bot.send_photo(
 
