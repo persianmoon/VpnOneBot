@@ -247,15 +247,15 @@ async def renew_order(order_config, new_expire_date, new_plan, new_price):
         await db.execute(
             """
             UPDATE orders
+
             SET
                 plan = ?,
                 price = ?,
-                config = ?,
-                buy_date = ?,
                 expire_date = ?,
                 status = 'approved'
 
             WHERE config = ?
+
             """,
             (
                 new_plan,
@@ -264,6 +264,8 @@ async def renew_order(order_config, new_expire_date, new_plan, new_price):
                 order_config
             )
         )
+
+        print("RENEW UPDATED ROWS:", db.total_changes)
 
         await db.commit()
 
