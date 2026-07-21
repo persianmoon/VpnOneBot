@@ -101,6 +101,7 @@ user_message_mode = None
 user_renew_mode = None
 renew_mode = None
 selected_renew_order = None
+renew_selected_service = None
 
 users_page = 0
 orders_page = 0
@@ -269,6 +270,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global orders_page
     global broadcast_mode
     global renew_mode
+    global renew_selected_service
 
     user_id = update.message.from_user.id
     text = update.message.text
@@ -920,6 +922,29 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(msg)
 
         return
+    
+    
+    if renew_mode == "select_service":
+
+        services = await get_user_active_orders(user_id)
+
+        for service in services:
+
+            button_text = f"{service[0]} - {service[1]}"
+
+            if text == button_text:
+
+                renew_selected_service = service
+
+                renew_mode = "select_plan"
+    
+
+                await update.message.reply_text(
+                    "📦 پلن جدید برای تمدید را انتخاب کنید:",
+                    reply_markup=plan_menu()
+                )
+
+               return
     # ================= سرویس من =================
 
     if text == "📡 سرویس من":
