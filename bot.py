@@ -944,7 +944,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     reply_markup=plan_menu()
                 )
 
-               return
+                return
     # ================= سرویس من =================
 
     if text == "📡 سرویس من":
