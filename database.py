@@ -29,6 +29,7 @@ async def init_db():
         )
         """)
 
+
         try:
             await db.execute(
                 "ALTER TABLE orders ADD COLUMN config TEXT"
