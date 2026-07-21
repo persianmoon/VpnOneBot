@@ -399,7 +399,7 @@ async def save_user_service(
                     config,
                     buy_date,
                     expire_date,
-                    "approved"
+                    status
                 )
 
                 VALUES (?, ?, ?, ?, ?, ?, ?)
