@@ -907,7 +907,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await update.message.reply_text(
             msg,
-            reply_markup=main_menu()
+            reply_markup=service_menu()
         )
 
         return
@@ -997,6 +997,17 @@ def orders_pagination_menu():
         [
             ["⬅️ قبلی", "بعدی ➡️"],
             ["⬅️ برگشت به مدیریت"]
+        ],
+        resize_keyboard=True
+    )
+
+def service_menu():
+
+    return ReplyKeyboardMarkup(
+        [
+            ["🔄 تمدید اشتراک"],
+            ["📨 ارسال پیام به ادمین"],
+            ["⬅️ بازگشت"]
         ],
         resize_keyboard=True
     )
