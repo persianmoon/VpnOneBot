@@ -1063,26 +1063,28 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print("RENEW SAVED:", renew_users)
 
 
-        await context.bot.send_message(
-            chat_id=ADMIN_ID,
-            text=
-            "🔄 درخواست تمدید اشتراک\n\n"
-            f"🆔 کاربر: {user_id}\n"
-            f"📦 سرویس فعلی: {renew_selected_service[0]}\n"
-            f"🔗 لینک فعلی:\n{renew_selected_service[2]}\n\n"
-            f"📦 پلن تمدید: {PLANS[text]['name']}\n"
-            f"💰 مبلغ: {PLANS[text]['price']}\n\n"
-            "لطفاً تمدید را بررسی کنید."
-        )
-
+        orders[user_id] = {
+            "plan": PLANS[text]["name"],
+            "price": PLANS[text]["price"]
+        }
 
         await update.message.reply_text(
-            "✅ درخواست تمدید ارسال شد.\nمنتظر تایید باشید.",
-            reply_markup=main_menu()
+
+            f"✅ پلن انتخابی:\n"
+            f"{orders[user_id]['plan']}\n\n"
+
+            f"💰 مبلغ:\n"
+            f"{orders[user_id]['price']}\n\n"
+
+            f"💳 شماره کارت:\n"
+            f"{CARD_NUMBER}\n\n"
+
+            "به نام میلاد رحیمی\n\n"
+
+            "📸 لطفاً رسید پرداخت را ارسال کنید.",
+
+            parse_mode="Markdown"
         )
-
-
-        renew_mode = None
 
         return
 
