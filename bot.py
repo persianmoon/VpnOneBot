@@ -552,7 +552,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                     msg += (
                         f"🆔 سفارش: {order[0]}\n"
-                        f"👤 آیدی کاربر: {order[1]}\n"
+                        f"👤 آیدی: {order[1]}\n"
                         f"📛 یوزرنیم: @{user_info[0] or 'ندارد'}\n"
                         f"👨 نام: {user_info[1] or 'ندارد'}\n"
                         f"📦 پلن: {order[2]}\n"
