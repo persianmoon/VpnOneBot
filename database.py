@@ -250,6 +250,8 @@ async def renew_order(order_config, new_expire_date, new_plan, new_price):
             SET
                 plan = ?,
                 price = ?,
+                config = ?,
+                buy_date = ?,
                 expire_date = ?,
                 status = 'approved'
 
@@ -327,11 +329,6 @@ async def save_user_service(
     expire_date
 ):
 
-    expire_date = JalaliDate(
-        datetime.now() + timedelta(days=30)
-    ).strftime("%Y/%m/%d")
-
-
     async with aiosqlite.connect(DB_NAME) as db:
 
         # اول چک می‌کنیم سفارش تایید شده دارد یا نه
@@ -383,6 +380,7 @@ async def save_user_service(
                     plan,
                     price,
                     config,
+                    buy_date,
                     expire_date,
                     status
                 )
@@ -393,6 +391,7 @@ async def save_user_service(
                     user_id,
                     plan,
                     price,
+                    buy_date,
                     config,
                     expire_date,
                     "approved"
