@@ -1047,23 +1047,30 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
 
+
+
+    # ================= بازگشت کلی =================
+
+    if text == "⬅️ بازگشت به منوی اصلی":
+
+        renew_mode = None
+
+        if user_id in renew_users:
+            del renew_users[user_id]
+
+        await update.message.reply_text(
+            "🏠 منوی اصلی:",
+            reply_markup=main_menu()
+        )
+
+        return
+
+
+
     # ================= تمدید اشتراک =================
 
     if renew_mode == "select_plan":
         
-        if text == "⬅️ بازگشت به منوی اصلی":
-
-            renew_mode = None
-
-            if user_id in renew_users:
-                del renew_users[user_id]
-    
-            await update.message.reply_text(
-                "🏠 منوی اصلی:",
-                reply_markup=main_menu()
-            )
-
-            return
         
         print("RENEW SELECT PLAN RUNNING:", text)
         print("RENEW MODE:", renew_mode)
