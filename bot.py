@@ -1155,6 +1155,8 @@ def orders_pagination_menu():
 async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_id = update.message.from_user.id
+    print("RECEIPT USER:", user_id)
+    print("RENEW USERS:", renew_users)
 
 
     if user_id == ADMIN_ID:
