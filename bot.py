@@ -1055,6 +1055,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "price": PLANS[text]["price"],
             "old_service": renew_selected_service
         }
+        
+        print("RENEW SAVED:", renew_users)
 
 
         await context.bot.send_message(
