@@ -61,6 +61,7 @@ IOS_TUTORIAL = "https://t.me/vpnoneorg/5"
 WINDOWS_TUTORIAL = "https://t.me/vpnoneorg/29"
 
 
+
 # ================= پلن ها =================
 
 PLANS = {
