@@ -1329,6 +1329,9 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if action == "renew_ok":
         
         new_date = None
+        
+        print("USER ID:", user_id)
+        print("RENEW USERS:", renew_users)
 
         if user_id in renew_users:
 
@@ -1356,11 +1359,13 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
     
 
+        print("FINAL NEW DATE:", new_date)
+
         await context.bot.send_message(
             chat_id=user_id,
             text=
             "✅ تمدید اشتراک شما تایید شد.\n\n"
-            f"📅 تاریخ انقضای جدید:\n{new_date}"
+            f"📅 تاریخ انقضای جدید:\n{str(new_date)}"
         )
 
 
