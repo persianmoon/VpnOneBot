@@ -184,6 +184,23 @@ def plan_menu():
         resize_keyboard=True
     )
 
+
+def renew_plan_menu():
+
+    return ReplyKeyboardMarkup(
+        [
+            ["30 گیگ - 3 کاربره - 200/000 تومان"],
+            ["50 گیگ - 3 کاربره - 300/000 تومان"],
+            ["70 گیگ - 3 کاربره - 400/000 تومان"],
+            ["100 گیگ - 3 کاربره - 500/000 تومان"],
+            ["نامحدود - 3 کاربره - 1/000/000 تومان"],
+            ["⬅️ بازگشت به منوی اصلی"]
+        ],
+        resize_keyboard=True
+    )
+
+
+
 def orders_menu():
 
     return ReplyKeyboardMarkup(
@@ -944,7 +961,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 await update.message.reply_text(
                     "📦 پلن جدید برای تمدید را انتخاب کنید:",
-                    reply_markup=plan_menu()
+                     reply_markup=renew_plan_menu()
                 )
 
                 return
