@@ -1316,6 +1316,35 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = int(user_id)
 
 
+
+    if action == "renew_ok":
+
+        await context.bot.send_message(
+            chat_id=user_id,
+            text=
+            "✅ تمدید اشتراک شما تایید شد.\n"
+            "اشتراک شما با موفقیت تمدید شد."
+        )
+
+        # اینجا بعداً تاریخ انقضا را آپدیت می‌کنیم
+
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text="✅ تمدید کاربر انجام شد."
+        )
+
+        return
+
+
+    elif action == "renew_no":
+
+        await context.bot.send_message(
+            chat_id=user_id,
+            text="❌ درخواست تمدید شما رد شد."
+        )
+
+        return
+
     if action == "ok":
 
         send_to_user = user_id
