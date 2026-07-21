@@ -1340,10 +1340,10 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             from datetime import timedelta
 
 
-                old_date = JalaliDate.strptime(
-                    old_service[3],
-                    "%Y/%m/%d"
-                )
+            old_date = JalaliDate.strptime(
+                old_service[3],
+                "%Y/%m/%d"
+            )
 
             new_date = old_date.to_gregorian() + timedelta(days=30)
 
