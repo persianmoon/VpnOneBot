@@ -1051,6 +1051,16 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if renew_mode == "select_plan":
         
+        if text == "⬅️ بازگشت به منوی اصلی":
+
+            renew_mode = None
+
+            await update.message.reply_text(
+                "🏠 منوی اصلی:",
+                reply_markup=main_menu()
+            )
+
+            return
         
         print("RENEW SELECT PLAN RUNNING:", text)
         print("RENEW MODE:", renew_mode)
@@ -1058,7 +1068,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if text not in PLANS:
             await update.message.reply_text(
                 "❌ لطفاً یکی از پلن‌ها را انتخاب کنید.",
-                reply_markup=plan_menu()
+                reply_markup=renew_plan_menu()
             )
             return
 
