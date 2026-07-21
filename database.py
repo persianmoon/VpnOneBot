@@ -259,7 +259,6 @@ async def renew_order(order_config, new_expire_date, new_plan, new_price):
             SET
                 plan = ?,
                 price = ?,
-                buy_date = ?,
                 expire_date = ?,
                 status = 'approved'
 
