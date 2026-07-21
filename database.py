@@ -111,19 +111,38 @@ async def add_user(user_id, username, first_name):
 
 async def add_order(user_id, plan, price):
 
+    from persiantools.jdatetime import JalaliDate
+    from datetime import datetime, timedelta
+
+    buy_date = JalaliDate.today().strftime("%Y/%m/%d")
+
+    expire_date = JalaliDate(
+        datetime.now() + timedelta(days=30)
+    ).strftime("%Y/%m/%d")
+
+
     async with aiosqlite.connect(DB_NAME) as db:
 
         await db.execute(
             """
             INSERT INTO orders
-            (user_id, plan, price, status)
+            (
+                user_id,
+                plan,
+                price,
+                buy_date,
+                expire_date,
+                status
+            )
 
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
                 user_id,
                 plan,
                 price,
+                buy_date,
+                expire_date,
                 "pending"
             )
         )
@@ -303,7 +322,9 @@ async def save_user_service(
     username,
     first_name,
     plan,
-    price
+    price,
+    buy_date,
+    expire_date
 ):
 
     expire_date = JalaliDate(

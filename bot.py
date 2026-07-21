@@ -751,28 +751,67 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if config_mode == "get_config":
 
-            await save_user_service(
-                send_to_user,
-                text,
-                username,
-                first_name,
-                selected_plan,
-                selected_price
+            selected_config = text
+
+            config_mode = "get_buy_date"
+
+            await update.message.reply_text(
+                "📅 تاریخ خرید را وارد کنید:\n\nمثال:\n1405/04/30"
             )
+
+            return
+        
+        
+        if config_mode == "get_buy_date":
+
+            try:
+
+                buy_date = JalaliDate.strptime(
+                    text,
+                    "%Y/%m/%d"
+                )
+
+                expire_date = (
+                    JalaliDate(
+                        buy_date.to_gregorian() + timedelta(days=30)
+                    )
+                    .strftime("%Y/%m/%d")
+                )
+
+
+                await save_user_service(
+                    send_to_user,
+                    selected_config,
+                    username,
+                    first_name,
+                    selected_plan,
+                    selected_price,
+                    buy_date.strftime("%Y/%m/%d"),
+                    expire_date
+                )
+
+
+                await update.message.reply_text(
+                    "✅ اشتراک ثبت شد.\n\n"
+                    f"📅 تاریخ خرید: {buy_date.strftime('%Y/%m/%d')}\n"
+                    f"📅 تاریخ انقضا: {expire_date}",
+                    reply_markup=admin_menu()
+                )
+
+
+                config_mode = None
+                send_to_user = None
+
+            except Exception as e:
+
+                await update.message.reply_text(
+                    f"❌ فرمت تاریخ اشتباه است.\n{e}"
+                )
+
+            return
+
+
             
-            service = await get_user_active_service(send_to_user)
-
-            if service:
-                plan = service[0]
-                price = service[1]
-                expire_date = service[3]
-            else:
-                plan = selected_plan
-                price = selected_price
-
-                expire_date = JalaliDate(
-                    datetime.now() + timedelta(days=30)
-                ).strftime("%Y/%m/%d")
                 
             get_user_info = await get_user(send_to_user)
 
@@ -1191,9 +1230,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await add_order(
             user_id,
             PLANS[text]["name"],
-            PLANS[text]["price"]
+            PLANS[text]["price"],
         )
-        return
 
 
 
