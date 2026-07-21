@@ -1163,7 +1163,43 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if user_id in renew_users:
-        # ادامه ارسال رسید تمدید
+
+        user_info = await get_user(user_id)
+
+        buttons = [
+            [
+                InlineKeyboardButton(
+                    "✅ تایید تمدید",
+                    callback_data=f"renew_ok|{user_id}"
+                ),
+                InlineKeyboardButton(
+                    "❌ رد تمدید",
+                    callback_data=f"renew_no|{user_id}"
+                )
+            ]
+        ]
+
+
+        await context.bot.send_photo(
+            chat_id=ADMIN_ID,
+
+            photo=update.message.photo[-1].file_id,
+
+            caption=
+            f"🔄 درخواست تمدید اشتراک\n\n"
+            f"🆔 User ID: {user_id}\n"
+            f"👤 یوزرنیم: @{user_info[0] or 'ندارد'}\n"
+            f"👨 نام: {user_info[1] or 'ندارد'}\n\n"
+            f"📦 پلن تمدید:\n{renew_users[user_id]['plan']}\n"
+            f"💰 مبلغ: {renew_users[user_id]['price']}",
+
+            reply_markup=InlineKeyboardMarkup(buttons)
+        )
+
+        await update.message.reply_text(
+            "✅ رسید تمدید ارسال شد.\nمنتظر تایید باشید."
+        )
+
         return
 
     if user_id not in orders:
