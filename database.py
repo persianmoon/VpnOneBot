@@ -221,6 +221,28 @@ async def update_order_status(user_id, status):
         await db.commit()
 
 
+async def renew_order(order_config, new_expire_date):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute(
+            """
+            UPDATE orders
+
+            SET expire_date = ?,
+                status = 'approved'
+
+            WHERE config = ?
+
+            """,
+            (
+                new_expire_date,
+                order_config
+            )
+        )
+
+        await db.commit()
+
 
 async def get_user_orders(user_id):
 

@@ -15,6 +15,7 @@ from database import (
     delete_users,
     delete_order,
     delete_all_orders,
+    renew_order
 )
 
 from database import save_user_service
@@ -928,15 +929,6 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=renew_service_menu(services)
         )
 
-        msg = ""
-
-        for index, service in enumerate(services, start=1):
-
-            msg += (
-                f"{index}️⃣ {service[0]}\n"
-                f"💰 {service[1]}\n"
-                f"📅 انقضا: {service[3]}\n\n"
-            )
 
 
         await update.message.reply_text(msg)
@@ -1335,20 +1327,47 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
     if action == "renew_ok":
+        
+        new_date = None
+
+        if user_id in renew_users:
+
+            old_service = renew_users[user_id]["old_service"]
+
+            old_config = old_service[2]
+
+            from persiantools.jdatetime import JalaliDate
+
+            old_date = JalaliDate.strptime(
+                old_service[3],
+                "%Y/%m/%d"
+            )
+
+            new_date = old_date + 30
+
+            await renew_order(
+                old_config,
+                str(new_date)
+            )
+    
 
         await context.bot.send_message(
             chat_id=user_id,
             text=
-            "✅ تمدید اشتراک شما تایید شد.\n"
-            "اشتراک شما با موفقیت تمدید شد."
+            "✅ تمدید اشتراک شما تایید شد.\n\n"
+            f"📅 تاریخ انقضای جدید:\n{new_date}"
         )
 
-        # اینجا بعداً تاریخ انقضا را آپدیت می‌کنیم
 
         await context.bot.send_message(
             chat_id=ADMIN_ID,
             text="✅ تمدید کاربر انجام شد."
         )
+
+
+        if user_id in renew_users:
+            del renew_users[user_id]
+
 
         return
 
