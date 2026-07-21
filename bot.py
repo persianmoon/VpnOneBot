@@ -955,8 +955,6 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if text == "📨 ارسال پیام به ادمین":
 
-        global send_message_mode
-
         send_message_mode = "support"
 
         await update.message.reply_text(
