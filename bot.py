@@ -103,6 +103,7 @@ renew_mode = None
 selected_renew_order = None
 renew_selected_service = None
 renew_request = None
+renew_users = {}
 
 users_page = 0
 orders_page = 0
@@ -890,7 +891,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # ================= تمدید اشتراک =================
 
     if text == "🔄 تمدید اشتراک":
-
+        
+        renew_users[user_id] = True
         services = await get_user_active_orders(user_id)
 
         if not services:
