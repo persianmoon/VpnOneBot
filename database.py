@@ -42,6 +42,14 @@ async def init_db():
             )
         except:
             pass
+        
+        
+        try:
+            await db.execute(
+                "ALTER TABLE orders ADD COLUMN buy_date TEXT"
+            )
+        except:
+            pass
 
         await db.commit()
 
@@ -251,6 +259,7 @@ async def renew_order(order_config, new_expire_date, new_plan, new_price):
             SET
                 plan = ?,
                 price = ?,
+                buy_date = ?,
                 expire_date = ?,
                 status = 'approved'
 
