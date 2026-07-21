@@ -3,6 +3,8 @@ import aiosqlite
 from datetime import datetime, timedelta
 from persiantools.jdatetime import JalaliDate
 
+print("DATABASE VERSION NEW")
+
 
 DB_NAME = "/data/vpnone.db"
 
