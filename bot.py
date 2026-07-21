@@ -1174,6 +1174,9 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if user_id in renew_users:
+            
+        print("RENEW DATA:", renew_users.get(user_id))
+
 
         user_info = await get_user(user_id)
 
