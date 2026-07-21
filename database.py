@@ -138,9 +138,10 @@ async def add_order(user_id, plan, price):
                 user_id,
                 plan,
                 price,
+                config,
                 buy_date,
                 expire_date,
-                status
+                "pending"
             )
 
             VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -331,13 +332,12 @@ async def get_user_active_orders(user_id):
 
 async def save_user_service(
     user_id,
-    config,
-    username,
-    first_name,
     plan,
     price,
+    config,
     buy_date,
-    expire_date
+    expire_date,
+    "approved"
 ):
 
     async with aiosqlite.connect(DB_NAME) as db:
