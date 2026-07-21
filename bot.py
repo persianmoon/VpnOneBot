@@ -838,13 +838,12 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 await save_user_service(
                     send_to_user,
-                    selected_config,
-                    username,
-                    first_name,
                     selected_plan,
                     selected_price,
+                    selected_config,
                     buy_date.strftime("%Y/%m/%d"),
-                    expire_date
+                    expire_date,
+                    "approved"
                 )
 
 

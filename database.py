@@ -336,13 +336,14 @@ async def get_user_active_orders(user_id):
 
 
 async def save_user_service(
-    
     user_id,
     plan,
     price,
     config,
     buy_date,
     expire_date,
+    username=None,
+    first_name=None,
     status="approved"
 ):
 
