@@ -1339,21 +1339,31 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             old_config = old_service[2]
 
+            expire = old_service[3]
 
-            old_date = JalaliDate.strptime(
-                old_service[3],
-                "%Y/%m/%d"
-            )
+            try:
+                old_date = JalaliDate.strptime(
+                    expire,
+                    "%Y/%m/%d"
+                )
 
-            new_date = old_date.to_gregorian() + timedelta(days=30)
+            except:
+                from datetime import datetime
 
-            new_date = JalaliDate.to_jalali(
-                new_date
-            )
+                gregorian_date = datetime.strptime(
+                    expire,
+                    "%Y-%m-%d"
+                ).date()
+
+                old_date = JalaliDate.to_jalali(
+                    gregorian_date
+                )
+
+
+            new_date = old_date + timedelta(days=30)
 
             new_date_text = new_date.strftime("%Y/%m/%d")
-            
-            new_date_text = new_date.strftime("%Y/%m/%d")
+
 
             await renew_order(
                 old_config,
