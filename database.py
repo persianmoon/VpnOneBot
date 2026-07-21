@@ -335,7 +335,6 @@ async def get_user_active_orders(user_id):
 
 async def save_user_service(
     
-    print("SAVE SERVICE RUNNING")
     
     user_id,
     plan,
@@ -343,8 +342,10 @@ async def save_user_service(
     config,
     buy_date,
     expire_date,
-    "approved"
+    status="approved"
 ):
+
+    print("SAVE SERVICE RUNNING")
 
     async with aiosqlite.connect(DB_NAME) as db:
 
