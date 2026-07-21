@@ -1340,9 +1340,9 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
     if action == "renew_ok":
-        
-        new_date = None
-        
+
+        new_date_text = None
+
         print("USER ID:", user_id)
         print("RENEW USERS:", renew_users)
 
@@ -1355,14 +1355,13 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             expire = old_service[3]
 
             try:
-                from datetime import date, timedelta
-                from persiantools.jdatetime import JalaliDate
-
-                new_date = JalaliDate.today() + timedelta(days=30)
-
-                new_date_text = new_date.strftime("%Y/%m/%d")
+                old_date = JalaliDate.strptime(
+                    expire,
+                    "%Y/%m/%d"
+                )
 
             except:
+
                 from datetime import datetime
 
                 gregorian_date = datetime.strptime(
@@ -1375,7 +1374,11 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
 
 
-            new_date = old_date + timedelta(days=30)
+            new_date = old_date.to_gregorian() + timedelta(days=30)
+
+            new_date = JalaliDate.to_jalali(
+                new_date
+            )
 
             new_date_text = new_date.strftime("%Y/%m/%d")
 
@@ -1386,9 +1389,10 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 renew_users[user_id]["plan"],
                 renew_users[user_id]["price"]
             )
-    
 
-        print("FINAL NEW DATE:", new_date)
+
+        print("FINAL NEW DATE:", new_date_text)
+
 
         await context.bot.send_message(
             chat_id=user_id,
