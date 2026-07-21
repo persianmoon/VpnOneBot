@@ -1336,9 +1336,6 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             old_config = old_service[2]
 
-            from persiantools.jdatetime import JalaliDate
-            from datetime import timedelta
-
 
             old_date = JalaliDate.strptime(
                 old_service[3],
