@@ -929,11 +929,6 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=renew_service_menu(services)
         )
 
-
-
-        await update.message.reply_text(msg)
-
-        return
     
     
     if renew_mode == "select_service":
@@ -1360,10 +1355,12 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             expire = old_service[3]
 
             try:
-                old_date = JalaliDate.strptime(
-                    expire,
-                    "%Y/%m/%d"
-                )
+                from datetime import date, timedelta
+                from persiantools.jdatetime import JalaliDate
+
+                new_date = JalaliDate.today() + timedelta(days=30)
+
+                new_date_text = new_date.strftime("%Y/%m/%d")
 
             except:
                 from datetime import datetime
