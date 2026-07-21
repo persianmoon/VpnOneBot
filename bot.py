@@ -102,6 +102,7 @@ user_renew_mode = None
 renew_mode = None
 selected_renew_order = None
 renew_selected_service = None
+renew_request = None
 
 users_page = 0
 orders_page = 0
@@ -271,6 +272,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global broadcast_mode
     global renew_mode
     global renew_selected_service
+    global renew_request
 
     user_id = update.message.from_user.id
     text = update.message.text
@@ -1024,6 +1026,49 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "📦 پلن موردنظر را انتخاب کنید:",
             reply_markup=vpn_menu()
         )
+
+        return
+
+    # ================= تمدید اشتراک =================
+
+    if renew_mode == "select_plan":
+
+        if text not in PLANS:
+            await update.message.reply_text(
+                "❌ لطفاً یکی از پلن‌ها را انتخاب کنید.",
+                reply_markup=plan_menu()
+            )
+            return
+
+
+        renew_request = {
+            "user_id": user_id,
+            "old_service": renew_selected_service,
+            "new_plan": PLANS[text]["name"],
+            "new_price": PLANS[text]["price"]
+        }
+
+
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=
+            "🔄 درخواست تمدید اشتراک\n\n"
+            f"🆔 کاربر: {user_id}\n"
+            f"📦 سرویس فعلی: {renew_selected_service[0]}\n"
+            f"🔗 لینک فعلی:\n{renew_selected_service[2]}\n\n"
+            f"📦 پلن تمدید: {PLANS[text]['name']}\n"
+            f"💰 مبلغ: {PLANS[text]['price']}\n\n"
+            "لطفاً تمدید را بررسی کنید."
+        )
+
+
+        await update.message.reply_text(
+            "✅ درخواست تمدید ارسال شد.\nمنتظر تایید باشید.",
+            reply_markup=main_menu()
+        )
+
+
+        renew_mode = None
 
         return
 
