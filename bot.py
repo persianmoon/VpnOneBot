@@ -877,7 +877,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         renew_mode = "select"
 
         await update.message.reply_text(
-            "🔄 کدام سرویس را می‌خواهید تمدید کنید؟",
+            "🔄 کدام سرویس را می‌خواهید تمدید کنید؟"
         )
 
         msg = ""
