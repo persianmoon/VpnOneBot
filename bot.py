@@ -1350,8 +1350,6 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 new_date.day
             )
 
-            new_date = old_date + 30
-
             await renew_order(
                 old_config,
                 str(new_date)
