@@ -225,7 +225,7 @@ async def renew_order(order_config, new_expire_date, new_plan, new_price):
 
     async with aiosqlite.connect(DB_NAME) as db:
 
-        await db.execute(
+        cursor = await db.execute(
             """
             UPDATE orders
 
@@ -246,7 +246,8 @@ async def renew_order(order_config, new_expire_date, new_plan, new_price):
             )
         )
 
-        print("RENEW UPDATED ROWS:", db.total_changes)
+        print("RENEW UPDATED ROWS:", cursor.rowcount)
+
         await db.commit()
 
 
