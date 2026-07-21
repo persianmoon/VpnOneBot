@@ -97,6 +97,7 @@ send_message_mode = None
 config_mode = None
 selected_plan = None
 selected_price = None
+selected_config = None
 broadcast_mode = None
 user_message_mode = None
 user_renew_mode = None
@@ -286,6 +287,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global send_message_mode
     global selected_plan
     global selected_price
+    global selected_config
     global users_page
     global orders_page
     global broadcast_mode
