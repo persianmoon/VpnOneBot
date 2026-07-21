@@ -532,49 +532,40 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if text == "⏳ سفارش‌های در انتظار":
 
-                pending = await get_pending_orders()
+            pending = await get_pending_orders()
 
-                if not pending:
-
-                    await update.message.reply_text(
-                        "✅ سفارش در انتظاری نیست."
-                    )
-
-                    return
-
-
-                msg = "⏳ سفارش‌های در انتظار:\n\n"
-
-
-                for order in pending:
-
-                    user_info = await get_user(order[1])
-
-                    msg += (
-                        f"🆔 سفارش: {order[0]}\n"
-                        f"👤 آیدی: {order[1]}\n"
-                        f"📛 یوزرنیم: @{user_info[0] or 'ندارد'}\n"
-                        f"👨 نام: {user_info[1] or 'ندارد'}\n"
-                        f"📦 پلن: {order[2]}\n"
-                        f"💰 مبلغ: {order[3]}\n"
-                        f"📌 وضعیت: {order[4]}\n\n"
-                        "━━━━━━━━━━━━\n\n"
-                    )
-
-
+            if not pending:
                 await update.message.reply_text(
-                    msg,
-                    reply_markup=orders_menu()
+                    "✅ سفارش در انتظاری نیست."
                 )
-
                 return
 
 
-            await update.message.reply_text(msg)
+            msg = "⏳ سفارش‌های در انتظار:\n\n"
+
+
+            for order in pending:
+
+                user_info = await get_user(order[1])
+
+
+                msg += (
+                    f"🆔 سفارش: {order[0]}\n"
+                    f"👤 آیدی: {order[1]}\n"
+                    f"📛 یوزرنیم: @{user_info[0] or 'ندارد'}\n"
+                    f"👨 نام: {user_info[1] or 'ندارد'}\n"
+                    f"📦 پلن: {order[2]}\n"
+                    f"💰 مبلغ: {order[3]}\n"
+                    f"📌 وضعیت: {order[4]}\n\n"
+                    "━━━━━━━━━━━━\n\n"
+                )
+
+
+            await update.message.reply_text(
                 msg,
                 reply_markup=orders_menu()
             )
-            
+
             return
 
 
