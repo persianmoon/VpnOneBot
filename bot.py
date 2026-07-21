@@ -1352,10 +1352,14 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 new_date.month,
                 new_date.day
             )
+            
+            new_date_text = new_date.strftime("%Y/%m/%d")
 
             await renew_order(
                 old_config,
-                str(new_date)
+                new_date_text,
+                renew_users[user_id]["plan"],
+                renew_users[user_id]["price"]
             )
     
 
@@ -1365,7 +1369,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=user_id,
             text=
             "✅ تمدید اشتراک شما تایید شد.\n\n"
-            f"📅 تاریخ انقضای جدید:\n{str(new_date)}"
+            f"📅 تاریخ انقضای جدید:\n{new_date_text}"
         )
 
 
