@@ -118,6 +118,8 @@ async def add_user(user_id, username, first_name):
 
 
 async def add_order(user_id, plan, price):
+    
+    print("ADD ORDER RUNNING")
 
     from persiantools.jdatetime import JalaliDate
     from datetime import datetime, timedelta
@@ -331,6 +333,9 @@ async def get_user_active_orders(user_id):
 
 
 async def save_user_service(
+    
+    print("SAVE SERVICE RUNNING")
+    
     user_id,
     plan,
     price,
