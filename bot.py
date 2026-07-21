@@ -892,7 +892,11 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if text == "🔄 تمدید اشتراک":
         
-        renew_users[user_id] = True
+        renew_users[user_id] = {
+            "plan": selected_plan,
+            "price": selected_price
+        }
+        
         services = await get_user_active_orders(user_id)
 
         if not services:
