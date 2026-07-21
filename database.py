@@ -143,11 +143,12 @@ async def add_order(user_id, plan, price):
                 status
             )
 
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 user_id,
                 plan,
+                config,
                 price,
                 buy_date,
                 expire_date,
@@ -395,7 +396,7 @@ async def save_user_service(
                     status
                 )
 
-                VALUES (?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     user_id,
