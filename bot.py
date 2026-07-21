@@ -1169,7 +1169,9 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
 
+    
 
+    return
 
     buttons = [
 
@@ -1192,6 +1194,23 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
     user_info = await get_user(user_id)
+    
+    if user_id in renew_users:
+
+        await context.bot.send_photo(
+            chat_id=ADMIN_ID,
+            photo=update.message.photo[-1].file_id,
+            caption=
+            f"🔄 درخواست تمدید اشتراک\n\n"
+            f"🆔 User ID: {user_id}\n"
+            f"👤 یوزرنیم: @{user_info[0] or 'ندارد'}\n"
+            f"👨 نام: {user_info[1] or 'ندارد'}\n\n"
+            f"📦 پلن تمدید:\n{orders[user_id]['plan']}\n"
+            f"💰 مبلغ: {orders[user_id]['price']}",
+            reply_markup=InlineKeyboardMarkup(buttons)
+        )
+
+        return
     
     await context.bot.send_photo(
 
