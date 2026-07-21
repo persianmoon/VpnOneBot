@@ -100,6 +100,7 @@ broadcast_mode = None
 user_message_mode = None
 user_renew_mode = None
 renew_mode = None
+selected_renew_order = None
 
 users_page = 0
 orders_page = 0
@@ -187,6 +188,30 @@ def orders_menu():
             ["🗑 حذف سفارش", "🔥 حذف همه سفارش‌ها"],
             ["⬅️ برگشت به مدیریت"]
         ],
+        resize_keyboard=True
+    )
+
+
+def renew_service_menu(services):
+
+    buttons = []
+
+    for index, service in enumerate(services):
+
+        buttons.append(
+            [
+                f"{service[0]} - {service[1]}"
+            ]
+        )
+
+
+    buttons.append(
+        ["⬅️ بازگشت"]
+    )
+
+
+    return ReplyKeyboardMarkup(
+        buttons,
         resize_keyboard=True
     )
 # ================= شروع =================
@@ -877,7 +902,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         renew_mode = "select"
 
         await update.message.reply_text(
-            "🔄 کدام سرویس را می‌خواهید تمدید کنید؟"
+            "🔄 سرویس موردنظر برای تمدید را انتخاب کنید:",
+            reply_markup=renew_service_menu(services)
         )
 
         msg = ""
