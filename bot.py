@@ -1162,6 +1162,9 @@ async def receipt_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id == ADMIN_ID:
         return
 
+    if user_id in renew_users:
+        # ادامه ارسال رسید تمدید
+        return
 
     if user_id not in orders:
 
