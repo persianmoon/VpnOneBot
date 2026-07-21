@@ -246,6 +246,7 @@ async def renew_order(order_config, new_expire_date, new_plan, new_price):
             )
         )
 
+        print("RENEW UPDATED ROWS:", db.total_changes)
         await db.commit()
 
 
@@ -295,6 +296,7 @@ async def get_user_active_orders(user_id):
         print("USER ID:", user_id)
         print("ACTIVE ORDERS:", result)
 
+        print("ACTIVE SERVICE RESULT:", result)
         return result
 
 
