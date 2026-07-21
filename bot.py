@@ -1352,35 +1352,38 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             old_config = old_service[2]
 
+            from datetime import datetime, timedelta
+            from persiantools.jdatetime import JalaliDate
+
+
+            # تاریخ قبلی
             expire = old_service[3]
 
             try:
-                old_date = JalaliDate.strptime(
-                    expire,
-                    "%Y/%m/%d"
-                )
-
-            except:
-
-                from datetime import datetime
-
-                gregorian_date = datetime.strptime(
+                old_date = datetime.strptime(
                     expire,
                     "%Y-%m-%d"
                 ).date()
 
-                old_date = JalaliDate.to_jalali(
-                    gregorian_date
-                )
+            except:
+                old_date = JalaliDate.strptime(
+                    expire,
+                    "%Y/%m/%d"
+                ).to_gregorian()
 
 
-            new_date = old_date.to_gregorian() + timedelta(days=30)
+            # تمدید از امروز + 30 روز
+            new_gregorian = datetime.now().date() + timedelta(days=30)
 
-            new_date = JalaliDate.to_jalali(
-                new_date
+
+            new_jalali = JalaliDate.to_jalali(
+                new_gregorian
             )
 
-            new_date_text = new_date.strftime("%Y/%m/%d")
+
+            new_date_text = new_jalali.strftime(
+                "%Y/%m/%d"
+            )
 
 
             await renew_order(
@@ -1391,7 +1394,10 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
 
-        print("FINAL NEW DATE:", new_date_text)
+            print("NEW DATE:", new_date_text)
+
+
+            del renew_users[user_id]
 
 
         await context.bot.send_message(
@@ -1408,12 +1414,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-        if user_id in renew_users:
-            del renew_users[user_id]
-
-
         return
-
 
     elif action == "renew_no":
 
