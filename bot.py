@@ -16,7 +16,7 @@ from database import (
     delete_order,
     delete_all_orders,
     renew_order,
-    toggle_order_status,
+    toggle_order_status
 )
 
 from database import save_user_service
