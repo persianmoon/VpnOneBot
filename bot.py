@@ -1337,10 +1337,20 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             old_config = old_service[2]
 
             from persiantools.jdatetime import JalaliDate
+            from datetime import timedelta
 
-            old_date = JalaliDate.strptime(
-                old_service[3],
-                "%Y/%m/%d"
+
+                old_date = JalaliDate.strptime(
+                    old_service[3],
+                    "%Y/%m/%d"
+                )
+
+            new_date = old_date.to_gregorian() + timedelta(days=30)
+
+            new_date = JalaliDate(
+                new_date.year,
+                new_date.month,
+                new_date.day
             )
 
             new_date = old_date + 30
