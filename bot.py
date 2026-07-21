@@ -793,6 +793,18 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
 
 
+                await context.bot.send_message(
+                    chat_id=send_to_user,
+                    text=
+                    "✅ سرویس شما فعال شد.\n\n"
+                    f"📦 پلن: {selected_plan}\n"
+                    f"💰 مبلغ: {selected_price}\n\n"
+                    f"🔗 لینک اشتراک:\n{selected_config}\n\n"
+                    f"📅 تاریخ خرید: {buy_date.strftime('%Y/%m/%d')}\n"
+                    f"📅 تاریخ انقضا: {expire_date}\n\n"
+                    "✅ وضعیت: فعال"
+                )
+                
                 await update.message.reply_text(
                     "✅ اشتراک ثبت شد.\n\n"
                     f"📅 تاریخ خرید: {buy_date.strftime('%Y/%m/%d')}\n"
