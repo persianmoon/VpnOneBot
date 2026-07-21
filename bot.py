@@ -1053,6 +1053,13 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "new_plan": PLANS[text]["name"],
             "new_price": PLANS[text]["price"]
         }
+        
+        
+        renew_users[user_id] = {
+            "plan": PLANS[text]["name"],
+            "price": PLANS[text]["price"],
+            "old_service": renew_selected_service
+        }
 
 
         await context.bot.send_message(
@@ -1290,6 +1297,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global send_to_user
     global send_message_mode
     global config_mode
+    global renew_users
 
     query = update.callback_query
 
