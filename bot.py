@@ -1039,6 +1039,30 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         return
+    
+    
+    if send_message_mode == "support":
+
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=
+            f"📨 پیام جدید از کاربر\n\n"
+            f"🆔 آیدی: {user_id}\n"
+            f"👤 یوزرنیم: @{username or 'ندارد'}\n"
+            f"👨 نام: {first_name or 'ندارد'}\n\n"
+            f"💬 پیام:\n{text}"
+        )
+
+
+        await update.message.reply_text(
+            "✅ پیام شما برای پشتیبانی ارسال شد.",
+            reply_markup=main_menu()
+        )
+
+
+        send_message_mode = None
+
+        return
 
 
     # ================= خرید VPN =================
