@@ -1055,6 +1055,9 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             renew_mode = None
 
+            if user_id in renew_users:
+                del renew_users[user_id]
+    
             await update.message.reply_text(
                 "🏠 منوی اصلی:",
                 reply_markup=main_menu()
@@ -1113,6 +1116,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="Markdown"
         )
 
+        renew_mode = None
         return
 
 
