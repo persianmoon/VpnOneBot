@@ -1417,70 +1417,52 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if action == "renew_ok":
 
-        new_date_text = None
+        print("RENEW OK START")
+        print("USER:", user_id)
+        print("DATA:", renew_users.get(user_id))
 
-        print("USER ID:", user_id)
-        print("RENEW USERS:", renew_users)
-
-        if user_id in renew_users:
-
-            old_service = renew_users[user_id]["old_service"]
-
-            old_config = old_service[2]
-
-            from datetime import datetime, timedelta
-            from persiantools.jdatetime import JalaliDate
-
-
-            # تاریخ قبلی
-            expire = old_service[3]
-
-            try:
-                old_date = datetime.strptime(
-                    expire,
-                    "%Y-%m-%d"
-                ).date()
-
-            except:
-                old_date = JalaliDate.strptime(
-                    expire,
-                    "%Y/%m/%d"
-                ).to_gregorian()
-
-
-            # تمدید از امروز + 30 روز
-            new_gregorian = datetime.now().date() + timedelta(days=30)
-
-
-            new_jalali = JalaliDate.to_jalali(
-                new_gregorian
+        if user_id not in renew_users:
+            await query.edit_message_caption(
+                caption="❌ اطلاعات تمدید پیدا نشد."
             )
+            return
 
 
-            new_date_text = new_jalali.strftime(
-                "%Y/%m/%d"
-            )
+        data = renew_users[user_id]
+
+        old_service = data["old_service"]
+
+        old_config = old_service[2]
 
 
-            await renew_order(
-                old_config,
-                new_date_text,
-                renew_users[user_id]["plan"],
-                renew_users[user_id]["price"]
-            )
+        from persiantools.jdatetime import JalaliDate
+        from datetime import timedelta, datetime
 
 
-            print("NEW DATE:", new_date_text)
+        # تاریخ جدید از امروز + 30 روز
+        new_date = JalaliDate(
+            datetime.now() + timedelta(days=30)
+        )
 
 
-            del renew_users[user_id]
+        new_date_text = new_date.strftime("%Y/%m/%d")
 
 
-        await context.bot.send_message(
+        await renew_order(
+            old_config,
+            new_date_text,
+            data["plan"],
+            data["price"]
+        )
+    
+
+       await context.bot.send_message(
             chat_id=user_id,
             text=
             "✅ تمدید اشتراک شما تایید شد.\n\n"
-            f"📅 تاریخ انقضای جدید:\n{new_date_text}"
+            f"📦 پلن جدید: {data['plan']}\n"
+            f"💰 مبلغ: {data['price']}\n\n"
+            f"📅 تاریخ انقضا:\n{new_date_text}"
         )
 
 
@@ -1488,6 +1470,9 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=ADMIN_ID,
             text="✅ تمدید کاربر انجام شد."
         )
+
+
+        del renew_users[user_id]
 
 
         return
