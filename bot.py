@@ -1347,11 +1347,11 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             new_date = old_date.to_gregorian() + timedelta(days=30)
 
-            new_date = JalaliDate(
-                new_date.year,
-                new_date.month,
-                new_date.day
+            new_date = JalaliDate.to_jalali(
+                new_date
             )
+
+            new_date_text = new_date.strftime("%Y/%m/%d")
             
             new_date_text = new_date.strftime("%Y/%m/%d")
 
