@@ -16,6 +16,7 @@ from database import (
     delete_order,
     delete_all_orders,
     renew_order
+    toggle_order_status
 )
 
 from database import save_user_service
@@ -208,7 +209,7 @@ def orders_menu():
     return ReplyKeyboardMarkup(
         [
             ["🗑 حذف سفارش", "🔥 حذف همه سفارش‌ها"],
-            ["⬅️ برگشت به مدیریت"]
+            ["⬅️ برگشت به مدیریت","🔄 تغییر وضعیت سفارش"],
         ],
         resize_keyboard=True
     )
@@ -531,29 +532,46 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if text == "⏳ سفارش‌های در انتظار":
 
-            pending = await get_pending_orders()
+                pending = await get_pending_orders()
+
+                if not pending:
+
+                    await update.message.reply_text(
+                        "✅ سفارش در انتظاری نیست."
+                    )
+
+                    return
 
 
-            if not pending:
+                msg = "⏳ سفارش‌های در انتظار:\n\n"
+
+
+                for order in pending:
+
+                    user_info = await get_user(order[1])
+
+                    username = user_info[0] if user_info else None
+                    first_name = user_info[1] if user_info else None
+
+
+                    msg += (
+                        f"🆔 سفارش: {order[0]}\n"
+                        f"👤 آیدی کاربر: {order[1]}\n"
+                        f"📛 یوزرنیم: @{username or 'ندارد'}\n"
+                        f"👨 نام: {first_name or 'ندارد'}\n"
+                        f"📦 پلن: {order[2]}\n"
+                        f"💰 مبلغ: {order[3]}\n"
+                        f"📌 وضعیت: {order[4]}\n\n"
+                        "━━━━━━━━━━━━\n\n"
+                    )
+
 
                 await update.message.reply_text(
-                    "✅ سفارش در انتظاری نیست."
+                    msg,
+                    reply_markup=orders_menu()
                 )
 
                 return
-
-
-            msg = "⏳ سفارش‌های در انتظار:\n\n"
-
-
-            for order in pending:
-
-                msg += (
-                    f"🆔 سفارش: {order[0]}\n"
-                    f"کاربر: {order[1]}\n"
-                    f"پلن: {order[2]}\n"
-                    f"مبلغ: {order[3]}\n\n"
-                )
 
 
             await update.message.reply_text(msg)
@@ -561,6 +579,52 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
 
+
+        if text == "🔄 تغییر وضعیت سفارش":
+
+            config_mode = "toggle_status"
+
+            await update.message.reply_text(
+                "🆔 آیدی سفارش را ارسال کنید:"
+            )
+
+            return
+
+
+
+        if config_mode == "toggle_status":
+
+            try:
+
+                order_id = int(text)
+
+                status = await toggle_order_status(order_id)
+
+
+                if status:
+
+                    await update.message.reply_text(
+                        f"✅ وضعیت سفارش تغییر کرد.\n\n"
+                        f"📌 وضعیت جدید: {status}"
+                    )
+
+                else:
+
+                    await update.message.reply_text(
+                        "❌ سفارش پیدا نشد."
+                    )
+
+
+            except:
+
+                await update.message.reply_text(
+                    "❌ آیدی اشتباه است."
+                )
+
+
+            config_mode = None
+
+            return
 
         if text == "📊 آمار فروش":
 

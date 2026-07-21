@@ -569,3 +569,46 @@ async def delete_all_orders():
         )
 
         await db.commit()
+        
+        
+async def toggle_order_status(order_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT status
+            FROM orders
+            WHERE id = ?
+            """,
+            (order_id,)
+        )
+
+        order = await cursor.fetchone()
+
+        if not order:
+            return None
+
+
+        new_status = (
+            "approved"
+            if order[0] == "pending"
+            else "pending"
+        )
+
+
+        await db.execute(
+            """
+            UPDATE orders
+            SET status = ?
+            WHERE id = ?
+            """,
+            (
+                new_status,
+                order_id
+            )
+        )
+
+        await db.commit()
+
+        return new_status
