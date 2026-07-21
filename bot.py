@@ -1005,7 +1005,8 @@ def service_menu():
 
     return ReplyKeyboardMarkup(
         [
-            ["🔄 تمدید اشتراک","📨 ارسال پیام به ادمین"],
+            ["🔄 تمدید اشتراک"],
+            ["📨 ارسال پیام به ادمین"],
             ["⬅️ بازگشت"]
         ],
         resize_keyboard=True
