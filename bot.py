@@ -97,6 +97,9 @@ config_mode = None
 selected_plan = None
 selected_price = None
 broadcast_mode = None
+user_message_mode = None
+user_renew_mode = None
+renew_mode = None
 
 users_page = 0
 orders_page = 0
@@ -108,6 +111,7 @@ def main_menu():
     return ReplyKeyboardMarkup(
         [
             ["💳 خرید VPN","📡 سرویس من"],
+            ["🔄 تمدید اشتراک","📨 ارسال پیام به ادمین"],
             ["📚 آموزش اتصال","📞 پشتیبانی"]
         ],
         resize_keyboard=True
@@ -239,6 +243,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global users_page
     global orders_page
     global broadcast_mode
+    global renew_mode
 
     user_id = update.message.from_user.id
     text = update.message.text
@@ -853,6 +858,42 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
 
+    # ================= تمدید اشتراک =================
+
+    if text == "🔄 تمدید اشتراک":
+
+        services = await get_user_active_orders(user_id)
+
+        if not services:
+
+            await update.message.reply_text(
+                "❌ شما سرویس فعالی ندارید.",
+                reply_markup=main_menu()
+            )
+
+            return
+
+
+        renew_mode = "select"
+
+        await update.message.reply_text(
+            "🔄 کدام سرویس را می‌خواهید تمدید کنید؟",
+        )
+
+        msg = ""
+
+        for index, service in enumerate(services, start=1):
+
+            msg += (
+                f"{index}️⃣ {service[0]}\n"
+                f"💰 {service[1]}\n"
+                f"📅 انقضا: {service[3]}\n\n"
+            )
+
+
+        await update.message.reply_text(msg)
+
+        return
     # ================= سرویس من =================
 
     if text == "📡 سرویس من":
