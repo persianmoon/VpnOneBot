@@ -981,12 +981,30 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             expire_date = service[3]
 
             if expire_date:
-                today = JalaliDate.today()
 
-                expire = JalaliDate.strptime(
-                    expire_date,
-                    "%Y/%m/%d"
-                )
+                try:
+                    # تاریخ شمسی قدیمی
+                    expire = JalaliDate.strptime(
+                        expire_date,
+                        "%Y/%m/%d"
+                    )
+
+                except:
+
+                    # تاریخ میلادی جدید
+                    from datetime import datetime
+
+                    gregorian_date = datetime.strptime(
+                        expire_date,
+                        "%Y-%m-%d"
+                    ).date()
+
+                    expire = JalaliDate.to_jalali(
+                        gregorian_date
+                    )
+
+
+                today = JalaliDate.today()
 
                 days_left = (expire - today).days
 
